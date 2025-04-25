@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    
+    <title>PhishAI Extension</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 10px;
+            width: 300px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 100px;
+        }
+
+        button {
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h3>Phishing Detector</h3>
+    <textarea id="emailInput" placeholder="Paste email or text here"></textarea>
+    <button id="analyzeBtn">Analyze</button>
+    <div id="resultBox">Results will appear here</div>
+
+
+    <script src="popup.js"></script>
+</body>
+
+</html>
