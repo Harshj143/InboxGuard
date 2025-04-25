@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InboxGuard | Chrome Extension</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-50 min-h-screen text-sm">
+    <div class="container mx-auto px-4 py-4 w-[400px]">
+        <header class="mb-6 text-center">
+            <div class="flex items-center justify-center mb-2">
+                <i class="fas fa-shield-alt text-3xl text-indigo-600 mr-2"></i>
+                <h1 class="text-2xl font-bold text-gray-800">InboxGuard</h1>
+            </div>
+            <p class="text-sm text-gray-600">Detect phishing emails instantly</p>
+        </header>
+
+        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-indigo-600 px-4 py-2">
+                <h2 class="text-lg font-semibold text-white flex items-center">
+                    <i class="fas fa-envelope mr-2"></i> Email Content
+                </h2>
+            </div>
+            <div class="p-4">
+                <textarea id="emailInput" class="w-full h-40 p-2 border rounded-lg resize-none focus:ring focus:ring-indigo-300 focus:border-indigo-500"
+                    placeholder="Paste a suspicious email here..."></textarea>
+
+                <div class="mt-4 flex justify-between">
+                    <button id="clearBtn" class="px-3 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 flex items-center text-sm">
+                        <i class="fas fa-trash-alt mr-1"></i> Clear
+                    </button>
+                    <button id="analyzeBtn" class="px-4 py-1 bg-indigo-600 text-white rounded hover:bg-indigo-700 flex items-center text-sm">
+                        <i class="fas fa-search mr-1"></i> Analyze
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-4 bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-indigo-600 px-4 py-2">
+                <h2 class="text-lg font-semibold text-white flex items-center">
+                    <i class="fas fa-chart-bar mr-2"></i> Results
+                </h2>
+            </div>
+            <div class="p-4">
+                <div id="resultsPlaceholder" class="text-center text-gray-400">
+                    <i class="fas fa-search text-3xl mb-2"></i>
+                    <p>Submit an email to see the results</p>
+                </div>
+
+                <div id="loadingIndicator" class="hidden text-center">
+                    <div class="w-10 h-10 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mx-auto mb-2"></div>
+                    <p class="text-indigo-600">Analyzing with Gemini AI...</p>
+                </div>
+
+                <div id="resultsContainer" class="hidden">
+                    <div id="riskIndicator" class="mb-4 p-3 rounded-lg"></div>
+                    <div class="mb-4">
+                        <h3 class="font-semibold text-gray-700 mb-1">Summary:</h3>
+                        <div id="explanation" class="p-2 bg-indigo-50 rounded text-gray-700 text-sm"></div>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-gray-700 mb-1">Indicators:</h3>
+                        <div id="indicatorsContainer" class="space-y-2 text-sm"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/main.js"></script>
+</body>
+</html>
