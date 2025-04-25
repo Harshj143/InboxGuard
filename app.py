@@ -292,7 +292,7 @@ def mock_analyze_email(email_text):
         "explanation": f"This{'appears to be a phishing email' if score > 50 else ' may be legitimate but exercise caution'}."
     }
 
-@app.route('/'
+@app.route('/')
 def index():
     return render_template('index.html')
 
