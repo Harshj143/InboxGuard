@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InboxGuard | Powered by Hackathon</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="mb-10 text-center">
+            <div class="flex items-center justify-center mb-4">
+                <i class="fas fa-shield-alt text-4xl text-indigo-600 mr-3"></i>
+                <h1 class="text-4xl font-bold text-gray-800">InboxGuard</h1>
+            </div>
+            <p class="text-lg text-gray-600">AI-powered phishing email analysis</p>
+        </header>
+        
+        <div class="flex flex-col lg:flex-row gap-8">
+            <!-- Left Panel - Email Input -->
+            <div class="w-full lg:w-1/2 bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-indigo-600 px-6 py-4">
+                    <h2 class="text-xl font-semibold text-white flex items-center">
+                        <i class="fas fa-envelope mr-2"></i> Email Content
+                    </h2>
+                </div>
+                
+                <div class="p-6">
+                    <textarea id="emailInput" class="w-full h-64 p-4 border rounded-lg focus:ring focus:ring-indigo-300 focus:border-indigo-500 resize-none" 
+                        placeholder="Paste your suspicious email here..."></textarea>
+                    
+                    <div class="mt-6 flex justify-between">
+                        <button id="clearBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 flex items-center">
+                            <i class="fas fa-trash-alt mr-2"></i> Clear
+                        </button>
+                        <button id="analyzeBtn" class="px-6 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 flex items-center">
+                            <i class="fas fa-search mr-2"></i> Analyze Email
+                        </button>
+                    </div>
+                    
+                    <div class="mt-8">
+                        <h3 class="text-lg font-medium text-gray-700 mb-3 flex items-center">
+                            <i class="fas fa-lightbulb mr-2 text-yellow-500"></i> Try an example:
+                        </h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                            <button class="example-btn p-3 text-sm bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-all">
+                                <i class="fas fa-university mr-1"></i> Bank Alert
+                            </button>
+                            <button class="example-btn p-3 text-sm bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-all">
+                                <i class="fas fa-key mr-1"></i> Password Reset
+                            </button>
+                            <button class="example-btn p-3 text-sm bg-indigo-50 border border-indigo-200 text-indigo-700 rounded-lg hover:bg-indigo-100 transition-all">
+                                <i class="fas fa-box mr-1"></i> Package Delivery
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Panel - Analysis Results -->
+            <div class="w-full lg:w-1/2 bg-white rounded-xl shadow-md overflow-hidden">
+                <div class="bg-indigo-600 px-6 py-4">
+                    <h2 class="text-xl font-semibold text-white flex items-center">
+                        <i class="fas fa-chart-bar mr-2"></i> Analysis Results
+                    </h2>
+                </div>
+                
+                <div class="p-6">
+                    <!-- Initial state -->
+                    <div id="resultsPlaceholder" class="flex flex-col items-center justify-center h-64 text-gray-400">
+                        <i class="fas fa-search text-5xl mb-4 opacity-30"></i>
+                        <p>Submit an email to see the analysis results</p>
+                    </div>
+                    
+                    <!-- Loading state -->
+                    <div id="loadingIndicator" class="hidden flex flex-col items-center justify-center h-64">
+                        <div class="w-16 h-16 border-4 border-indigo-200 border-t-indigo-600 rounded-full animate-spin mb-4"></div>
+                        <p class="text-indigo-600">Analyzing with Gemini AI...</p>
+                        <p class="text-sm text-gray-500 mt-2">This may take a few seconds</p>
+                    </div>
+                    
+                    <!-- Results -->
+                    <div id="resultsContainer" class="hidden">
+                        <!-- Risk indicator -->
+                        <div id="riskIndicator" class="mb-6 p-5 rounded-lg"></div>
+                        
+                        <!-- Explanation -->
+                        <div class="mb-6">
+                            <h3 class="font-medium text-gray-700 mb-2 flex items-center">
+                                <i class="fas fa-info-circle mr-2 text-indigo-500"></i> Analysis Summary:
+                            </h3>
+                            <div id="explanation" class="p-4 bg-indigo-50 rounded-lg text-gray-700"></div>
+                        </div>
+                        
+                        <!-- Detailed indicators -->
+                        <div>
+                            <h3 class="font-medium text-gray-700 mb-2 flex items-center">
+                                <i class="fas fa-list-ul mr-2 text-indigo-500"></i> Detected Indicators:
+                            </h3>
+                            <div id="indicatorsContainer" class="space-y-4">
+                                <!-- Indicators will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Information section -->
+        <div class="mt-10 bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="bg-gray-100 px-6 py-4 border-b">
+                <h2 class="text-xl font-semibold text-gray-800 flex items-center">
+                    <i class="fas fa-info-circle mr-2 text-indigo-600"></i> How InboxGuard Works
+                </h2>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="p-4 border rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3 class="font-medium">Google Gemini Powered</h3>
+                        </div>
+                        <p class="text-sm text-gray-600">Uses Google's Gemini AI to analyze the content, tone, and intent of emails to identify phishing attempts that traditional systems might miss.</p>
+                    </div>
+                    
+                    <div class="p-4 border rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3">
+                                <i class="fas fa-link"></i>
+                            </div>
+                            <h3 class="font-medium">URL Inspection</h3>
+                        </div>
+                        <p class="text-sm text-gray-600">Analyzes embedded links for suspicious patterns, shortened URLs, misleading domains, and other indicators of phishing attempts.</p>
+                    </div>
+                    
+                    <div class="p-4 border rounded-lg">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 mr-3">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3 class="font-medium">Risk Assessment</h3>
+                        </div>
+                        <p class="text-sm text-gray-600">Provides a detailed risk assessment with confidence score and specific explanations of detected phishing indicators.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer class="mt-8 py-6 border-t">
+        <div class="container mx-auto px-4 text-center text-gray-500 text-sm">
+            <p>InboxGuard</p>
+            <p class="mt-1">This is a demonstration for educational purposes. For a real deployment, additional security measures would be implemented.</p>
+        </div>
+    </footer>
+    
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>
