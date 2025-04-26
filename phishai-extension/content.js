@@ -203,7 +203,7 @@ function toggleResultContainer(e) {
   if (resultContainer.style.display === 'none') {
     resultContainer.style.display = 'block';
     resultContainer.style.top = `${icon.offsetTop}px`;
-    resultContainer.style.left = `${icon.offsetLeft + icon.offsetWidth + 10}px`;
+    resultContainer.style.left = `${icon.offsetLeft - resultContainer.offsetWidth - 10}px`; // Adjusted to position on the left
   } else {
     resultContainer.style.display = 'none';
   }
@@ -411,27 +411,27 @@ function displayResults(data, container) {
   html += `<details>
     <summary style="cursor: pointer; margin: 10px 0; color: #4285f4;">Show details</summary>
     <div style="margin-left: 10px;">`;
-  
+
   if (data.spoofed_sender) {
     html += `<p>⚠️ <strong>Spoofed sender detected</strong></p>`;
   }
-  
+
   if (data.sender_analysis) {
     html += `<p><strong>Sender analysis:</strong> ${data.sender_analysis}</p>`;
   }
-  
+
   if (data.urgency_indicators?.length) {
     html += `<p><strong>Urgency indicators:</strong> ${data.urgency_indicators.join(", ")}</p>`;
   }
-  
+
   if (data.threat_indicators?.length) {
     html += `<p><strong>Threat indicators:</strong> ${data.threat_indicators.join(", ")}</p>`;
   }
-  
+
   if (data.data_requests?.length) {
     html += `<p><strong>Sensitive data requests:</strong> ${data.data_requests.join(", ")}</p>`;
   }
-  
+
   if (data.suspicious_links?.length) {
     html += `<p><strong>Suspicious links:</strong><ul>` +
       data.suspicious_links.map(l => 
@@ -439,11 +439,11 @@ function displayResults(data, container) {
       ).join("") +
       `</ul></p>`;
   }
-  
+
   if (data.linguistic_manipulation?.length) {
     html += `<p><strong>Manipulation tactics:</strong> ${data.linguistic_manipulation.join(", ")}</p>`;
   }
-  
+
   html += `</div></details>`;
   
   // Add scan again button
@@ -460,7 +460,7 @@ function displayResults(data, container) {
   ">Scan Again</button>`;
   
   container.innerHTML = html;
-  
+
   // Add event listener to new button
   const newScanButton = document.getElementById('inboxguard-scan-btn');
   if (newScanButton) {
