@@ -148,13 +148,12 @@ function makeDraggable(element, linkedElement) {
 
   // Mouse down event - start dragging
   element.addEventListener('mousedown', (e) => {
-    if (e.target === element || e.target.parentNode === element) {
-      isDragging = true;
-      offsetX = e.clientX - element.getBoundingClientRect().left;
-      offsetY = e.clientY - element.getBoundingClientRect().top;
-      element.classList.add('dragging');
-      e.preventDefault();
-    }
+    // Allow dragging from any part of the icon
+    isDragging = true;
+    offsetX = e.clientX - element.getBoundingClientRect().left;
+    offsetY = e.clientY - element.getBoundingClientRect().top;
+    element.classList.add('dragging');
+    e.preventDefault();
   });
 
   // Mouse move event - move element
