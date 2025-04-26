@@ -141,48 +141,63 @@ function createFloatingIcon(platform) {
   }, 1500);
 }
 
-// Make an element draggable
+// Ensure the floating icon and result container stay within the screen bounds
 function makeDraggable(element, linkedElement) {
   let offsetX = 0, offsetY = 0;
   let isDragging = false;
-  
+
   // Mouse down event - start dragging
   element.addEventListener('mousedown', (e) => {
-    // Only initiate drag if it's not a click on a child element
     if (e.target === element || e.target.parentNode === element) {
       isDragging = true;
       offsetX = e.clientX - element.getBoundingClientRect().left;
       offsetY = e.clientY - element.getBoundingClientRect().top;
-      
-      // Add a class to indicate dragging
       element.classList.add('dragging');
-      
-      // Prevent default to avoid text selection during drag
       e.preventDefault();
     }
   });
-  
+
   // Mouse move event - move element
   document.addEventListener('mousemove', (e) => {
     if (!isDragging) return;
-    
-    const left = e.clientX - offsetX;
-    const top = e.clientY - offsetY;
-    
+
+    let left = e.clientX - offsetX;
+    let top = e.clientY - offsetY;
+
     // Ensure the icon stays within the viewport
     const maxX = window.innerWidth - element.offsetWidth;
     const maxY = window.innerHeight - element.offsetHeight;
-    
-    element.style.left = `${Math.max(0, Math.min(left, maxX))}px`;
-    element.style.top = `${Math.max(0, Math.min(top, maxY))}px`;
-    
+
+    left = Math.max(0, Math.min(left, maxX));
+    top = Math.max(0, Math.min(top, maxY));
+
+    element.style.left = `${left}px`;
+    element.style.top = `${top}px`;
+
     // If linked element is visible, update its position too
     if (linkedElement && linkedElement.style.display !== 'none') {
-      linkedElement.style.top = `${element.offsetTop}px`;
-      linkedElement.style.left = `${element.offsetLeft + element.offsetWidth + 10}px`;
+      const containerWidth = linkedElement.offsetWidth;
+      const containerHeight = linkedElement.offsetHeight;
+
+      let linkedTop = top;
+      let linkedLeft = left + element.offsetWidth + 10; // Position to the right of the icon
+
+      // Adjust if the container goes out of bounds
+      if (linkedLeft + containerWidth > window.innerWidth) {
+        linkedLeft = left - containerWidth - 10; // Position to the left of the icon
+      }
+      if (linkedTop + containerHeight > window.innerHeight) {
+        linkedTop = window.innerHeight - containerHeight - 10; // Adjust to fit within the screen
+      }
+      if (linkedTop < 0) {
+        linkedTop = 10; // Ensure it doesn't go above the screen
+      }
+
+      linkedElement.style.top = `${linkedTop}px`;
+      linkedElement.style.left = `${linkedLeft}px`;
     }
   });
-  
+
   // Mouse up event - stop dragging
   document.addEventListener('mouseup', () => {
     if (isDragging) {
@@ -196,14 +211,35 @@ function makeDraggable(element, linkedElement) {
 function toggleResultContainer(e) {
   // Only toggle if it's a click (not a drag end)
   if (e.target.classList.contains('dragging')) return;
-  
+
   const resultContainer = document.getElementById('inboxguard-result-container');
   const icon = document.getElementById('inboxguard-floating-icon');
-  
+
   if (resultContainer.style.display === 'none') {
     resultContainer.style.display = 'block';
-    resultContainer.style.top = `${icon.offsetTop}px`;
-    resultContainer.style.left = `${icon.offsetLeft - resultContainer.offsetWidth - 10}px`; // Adjusted to position on the left
+
+    // Ensure the result container is displayed inside the screen
+    const containerWidth = resultContainer.offsetWidth;
+    const containerHeight = resultContainer.offsetHeight;
+    const screenWidth = window.innerWidth;
+    const screenHeight = window.innerHeight;
+
+    let top = icon.offsetTop;
+    let left = icon.offsetLeft - containerWidth - 10; // Position to the left of the icon
+
+    // Adjust if the container goes out of bounds
+    if (left < 0) {
+      left = icon.offsetLeft + icon.offsetWidth + 10; // Position to the right of the icon
+    }
+    if (top + containerHeight > screenHeight) {
+      top = screenHeight - containerHeight - 10; // Adjust to fit within the screen
+    }
+    if (top < 0) {
+      top = 10; // Ensure it doesn't go above the screen
+    }
+
+    resultContainer.style.top = `${top}px`;
+    resultContainer.style.left = `${left}px`;
   } else {
     resultContainer.style.display = 'none';
   }
@@ -384,7 +420,7 @@ function showScanError(errorMessage) {
   }
 }
 
-// Display the phishing analysis results
+// Ensure the link for redirection to the website is visible and functional
 function displayResults(data, container) {
   // Determine color based on risk
   let riskColor = '#4caf50'; // Default green (low risk)
@@ -395,7 +431,7 @@ function displayResults(data, container) {
   } else if (data.risk_assessment === 'Critical') {
     riskColor = '#b71c1c'; // Dark red
   }
-  
+
   // Build HTML for the results
   let html = `
     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
@@ -403,49 +439,24 @@ function displayResults(data, container) {
       <span style="font-weight: bold; color: ${riskColor};">${data.risk_assessment} Risk (${data.confidence_score}%)</span>
     </div>
   `;
-  
+
   // Short explanation
   html += `<p>${data.explanation}</p>`;
-  
-  // Show detailed information in a collapsible section
-  html += `<details>
-    <summary style="cursor: pointer; margin: 10px 0; color: #4285f4;">Show details</summary>
-    <div style="margin-left: 10px;">`;
 
-  if (data.spoofed_sender) {
-    html += `<p>⚠️ <strong>Spoofed sender detected</strong></p>`;
-  }
+  // Add a link to redirect to the main website
+  html += `<p>For more details, click the link below:</p>`;
+  html += `<button id="inboxguard-details-btn" style="
+    background-color: #4285f4;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 12px;
+    font-size: 13px;
+    margin-top: 8px;
+    cursor: pointer;
+    display: block;
+  ">View Full Report</button>`;
 
-  if (data.sender_analysis) {
-    html += `<p><strong>Sender analysis:</strong> ${data.sender_analysis}</p>`;
-  }
-
-  if (data.urgency_indicators?.length) {
-    html += `<p><strong>Urgency indicators:</strong> ${data.urgency_indicators.join(", ")}</p>`;
-  }
-
-  if (data.threat_indicators?.length) {
-    html += `<p><strong>Threat indicators:</strong> ${data.threat_indicators.join(", ")}</p>`;
-  }
-
-  if (data.data_requests?.length) {
-    html += `<p><strong>Sensitive data requests:</strong> ${data.data_requests.join(", ")}</p>`;
-  }
-
-  if (data.suspicious_links?.length) {
-    html += `<p><strong>Suspicious links:</strong><ul>` +
-      data.suspicious_links.map(l => 
-        `<li>${l.url} — ${l.issues.join(", ")}</li>`
-      ).join("") +
-      `</ul></p>`;
-  }
-
-  if (data.linguistic_manipulation?.length) {
-    html += `<p><strong>Manipulation tactics:</strong> ${data.linguistic_manipulation.join(", ")}</p>`;
-  }
-
-  html += `</div></details>`;
-  
   // Add scan again button
   html += `<button id="inboxguard-scan-btn" style="
     background-color: #4285f4;
@@ -458,13 +469,21 @@ function displayResults(data, container) {
     cursor: pointer;
     display: block;
   ">Scan Again</button>`;
-  
+
   container.innerHTML = html;
 
-  // Add event listener to new button
+  // Add event listener to new buttons
   const newScanButton = document.getElementById('inboxguard-scan-btn');
   if (newScanButton) {
     newScanButton.addEventListener('click', () => scanCurrentEmail(true));
+  }
+
+  const detailsButton = document.getElementById('inboxguard-details-btn');
+  if (detailsButton) {
+    detailsButton.addEventListener('click', () => {
+      const reportUrl = `http://127.0.0.1:5000/report?email_id=${data.email_id}`;
+      window.open(reportUrl, '_blank', 'width=800,height=600');
+    });
   }
 }
 

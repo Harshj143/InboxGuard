@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Analysis Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .risk {
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+        .high-risk {
+            color: #f44336;
+        }
+        .details {
+            margin-top: 20px;
+        }
+        .details h2 {
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+        .details ul {
+            list-style: none;
+            padding: 0;
+        }
+        .details ul li {
+            background: #f9f9f9;
+            margin: 5px 0;
+            padding: 10px;
+            border-left: 4px solid #4285f4;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Email Analysis Report</h1>
+        <p><strong>Email ID:</strong> {{ result.email_id }}</p>
+        <p class="risk high-risk">Risk Assessment: {{ result.risk_assessment }} ({{ result.confidence_score }}%)</p>
+        <p>{{ result.explanation }}</p>
+
+        <div class="details">
+            <h2>Details:</h2>
+            <ul>
+                <li><strong>Spoofed Sender:</strong> {{ 'Yes' if result.details.spoofed_sender else 'No' }}</li>
+                <li><strong>Suspicious Links:</strong>
+                    <ul>
+                        {% for link in result.details.suspicious_links %}
+                        <li>{{ link.url }} - Issues: {{ ", ".join(link.issues) }}</li>
+                        {% endfor %}
+                    </ul>
+                </li>
+                <li><strong>Urgency Indicators:</strong> {{ ", ".join(result.details.urgency_indicators) }}</li>
+                <li><strong>Threat Indicators:</strong> {{ ", ".join(result.details.threat_indicators) }}</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

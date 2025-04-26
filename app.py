@@ -343,5 +343,34 @@ def preview_link():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/report', methods=['GET'])
+def report():
+    email_id = request.args.get('email_id')
+    if not email_id:
+        return "<h1>Error: No email ID provided</h1>", 400
+
+    # Mock data for demonstration purposes
+    # In a real application, fetch the analysis result from a database or cache
+    mock_result = {
+        "email_id": email_id,
+        "risk_assessment": "High",
+        "confidence_score": 85,
+        "explanation": "This email contains suspicious links and urgency tactics.",
+        "details": {
+            "spoofed_sender": True,
+            "suspicious_links": [
+                {
+                    "url": "http://example.com",
+                    "issues": ["Uses URL shortening service", "Not using HTTPS"]
+                }
+            ],
+            "urgency_indicators": ["Immediate action required"],
+            "threat_indicators": ["Account suspension threat"]
+        }
+    }
+
+    # Render the result in a simple HTML page
+    return render_template('report.html', result=mock_result)
+
 if __name__ == '__main__':
     app.run(debug=True)
