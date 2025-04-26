@@ -13,6 +13,59 @@
             height: 80vh; /* Make the iframe taller to fit more content */
             border: none;
         }
+        
+        /* Layout management for panels */
+        #panels-container {
+            display: flex;
+            flex-direction: row;
+            gap: 20px;
+            transition: all 0.5s ease-in-out;
+        }
+        
+        /* Single view - email panel centered */
+        #panels-container.single-view #email-panel {
+            width: 70%;
+            margin: 0 auto;
+            transition: all 0.5s ease-in-out;
+        }
+        
+        /* Dual view - panels side by side */
+        #panels-container.dual-view #email-panel,
+        #panels-container.dual-view #analysis-panel {
+            width: calc(50% - 10px);
+            transition: all 0.5s ease-in-out;
+        }
+        
+        /* Hide analysis panel when not active */
+        #panels-container.single-view #analysis-panel {
+            display: none;
+        }
+        
+        /* Animation for Analysis Results panel */
+        #analysis-panel {
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all 0.5s ease-in-out;
+        }
+        
+        #analysis-panel.active {
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Responsive adjustments */
+        @media (max-width: 1024px) {
+            #panels-container {
+                flex-direction: column;
+            }
+            
+            #panels-container.single-view #email-panel,
+            #panels-container.dual-view #email-panel,
+            #panels-container.dual-view #analysis-panel {
+                width: 100%;
+                margin: 0;
+            }
+        }
     </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -24,10 +77,14 @@
             </div>
             <p class="text-lg text-gray-600">AI-powered phishing email analysis</p>
         </header>
+        <div class="check">
+            <a href="check.html"></a>
+        </div>
         
-        <div class="flex flex-col lg:flex-row gap-8">
+        <!-- Updated panels container with ID for layout control -->
+        <div id="panels-container" class="single-view">
             <!-- Left Panel - Email Input -->
-            <div class="w-full lg:w-1/2 bg-white rounded-xl shadow-md overflow-hidden">
+            <div id="email-panel" class="bg-white rounded-xl shadow-md overflow-hidden">
                 <div class="bg-indigo-600 px-6 py-4">
                     <h2 class="text-xl font-semibold text-white flex items-center">
                         <i class="fas fa-envelope mr-2"></i> Email Content
@@ -67,7 +124,7 @@
             </div>
             
             <!-- Right Panel - Analysis Results -->
-            <div class="w-full lg:w-1/2 bg-white rounded-xl shadow-md overflow-hidden">
+            <div id="analysis-panel" class="bg-white rounded-xl shadow-md overflow-hidden">
                 <div class="bg-indigo-600 px-6 py-4">
                     <h2 class="text-xl font-semibold text-white flex items-center">
                         <i class="fas fa-chart-bar mr-2"></i> Analysis Results
