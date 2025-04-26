@@ -7,6 +7,7 @@ from urllib.parse import urlparse
 from dotenv import load_dotenv
 import google.genai as genai
 from google.genai import types
+import requests
 
 # Load environment variables from .env file
 load_dotenv()
@@ -322,6 +323,25 @@ def analyze():
         result = mock_analyze_email(email_text)
     
     return jsonify(result)
+
+@app.route('/preview', methods=['POST'])
+def preview_link():
+    try:
+        # Get the URL from the request
+        url = request.json.get('url')
+        if not url:
+            return jsonify({'error': 'URL is required'}), 400
+
+        # Fetch the URL content
+        response = requests.get(url, timeout=5)
+        response.raise_for_status()
+
+        # Return the preview data
+        return jsonify({
+            'url': url
+        })
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
