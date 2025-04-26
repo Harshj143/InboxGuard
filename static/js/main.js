@@ -221,9 +221,9 @@ analyzeBtn.addEventListener('click', async () => {
             resultsPlaceholder.classList.remove('hidden');
             return;
         }
-
+        displayResults(result)
         // Show the report in a popup
-        showReportPopup(result);
+        //showReportPopup(result);
     } catch (error) {
         console.error('Error during analysis:', error);
         alert(`Error: ${error.message}`);
