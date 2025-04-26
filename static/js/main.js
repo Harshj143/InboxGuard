@@ -1,5 +1,5 @@
 // Example emails for demonstration
-console.log("🔥 main.js loaded");
+console.log(" main.js loaded");
 
 const examples = {
     'Bank Alert': `From: security@secure-banking-alerts.com
@@ -56,6 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const emailInput = document.getElementById('emailInput');
     const analyzeBtn = document.getElementById('analyzeBtn');
     const clearBtn = document.getElementById('clearBtn');
+    
     const exampleBtns = document.querySelectorAll('.example-btn');
     const resultsPlaceholder = document.getElementById('resultsPlaceholder');
     const loadingIndicator = document.getElementById('loadingIndicator');
@@ -63,6 +64,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const riskIndicator = document.getElementById('riskIndicator');
     const explanation = document.getElementById('explanation');
     const indicatorsContainer = document.getElementById('indicatorsContainer');
+    
+    // Get panel container elements for layout management
+    const panelsContainer = document.getElementById('panels-container');
+    const emailPanel = document.getElementById('email-panel');
+    const analysisPanel = document.getElementById('analysis-panel');
 
     // Load example emails
     exampleBtns.forEach((btn, index) => {
@@ -87,6 +93,25 @@ document.addEventListener('DOMContentLoaded', function() {
     // Clear button
     clearBtn.addEventListener('click', () => {
         emailInput.value = '';
+        
+        // Reset to single view when clearing
+        panelsContainer.classList.add('single-view');
+        panelsContainer.classList.remove('dual-view');
+        
+        // Remove active class from analysis panel
+        if (analysisPanel) {
+            analysisPanel.classList.remove('active');
+        }
+        
+        // Hide results
+        if (resultsContainer) {
+            resultsContainer.classList.add('hidden');
+        }
+        
+        // Show placeholder
+        if (resultsPlaceholder) {
+            resultsPlaceholder.classList.remove('hidden');
+        }
     });
 
     // Analyze button
@@ -101,6 +126,17 @@ document.addEventListener('DOMContentLoaded', function() {
         resultsPlaceholder.classList.add('hidden');
         resultsContainer.classList.add('hidden');
         loadingIndicator.classList.remove('hidden');
+        
+        // Switch to dual view layout before analysis starts
+        panelsContainer.classList.remove('single-view');
+        panelsContainer.classList.add('dual-view');
+        
+        // Show analysis panel with animation after a tiny delay
+        if (analysisPanel) {
+            setTimeout(function() {
+                analysisPanel.classList.add('active');
+            }, 10);
+        }
 
         try {
             const response = await fetch('/analyze', {
@@ -116,7 +152,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const result = await response.json();
-
+            
             if (result.error) {
                 alert(`Error: ${result.error}`);
                 loadingIndicator.classList.add('hidden');
@@ -125,9 +161,6 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             displayResults(result);
-
-            // Redirect to the report page with the email_id
-            window.location.href = `/report?email_id=${result.email_id}`;
         } catch (error) {
             console.error('Error during analysis:', error);
             alert(`Error: ${error.message}`);
