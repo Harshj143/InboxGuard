@@ -47,24 +47,26 @@ function createFloatingIcon(platform) {
   iconWrapper.id = 'inboxguard-floating-icon';
   iconWrapper.style.cssText = `
     position: fixed;
-    top: 100px;
+    bottom: 20px;
     right: 20px;
-    width: 48px;
-    height: 48px;
+    width: 50px; /* Adjusted size */
+    height: 50px; /* Adjusted size */
     border-radius: 50%;
-    background-color: #ffffff;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    background-color: #0d47a1; /* Dark blue background */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: move;
+    cursor: pointer;
     z-index: 9999;
     transition: transform 0.2s, box-shadow 0.2s;
   `;
   
   // Create the icon
   const iconInner = document.createElement('div');
-  iconInner.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#4285f4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>`;
+  // Explicitly set the full path for the icon image using chrome.runtime.getURL
+  const iconPath = chrome.runtime.getURL("Icon2.png");
+  iconInner.innerHTML = `<img src="${iconPath}" alt="" style="width: 36px; height: 36px;" viewBox="0 0 36 36">`;
   
   // Create the status indicator
   const statusIndicator = document.createElement('div');
