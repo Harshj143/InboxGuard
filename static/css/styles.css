@@ -6,12 +6,9 @@
 }
 
 @keyframes pulse {
-
-    0%,
-    100% {
+    0%, 100% {
         opacity: 1;
     }
-
     50% {
         opacity: .5;
     }
@@ -88,13 +85,8 @@ textarea::-webkit-scrollbar-thumb:hover {
 }
 
 @keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 /* Card hover effects */
@@ -155,16 +147,16 @@ textarea::-webkit-scrollbar-thumb:hover {
     .hide-on-mobile {
         display: none;
     }
-
+    
     .mobile-full-width {
         width: 100%;
     }
-
+    
     .mobile-padding {
         padding: 1rem;
     }
 }
-
+/* Layout management for panels */
 #panels-container {
     display: flex;
     flex-direction: row;
@@ -172,22 +164,26 @@ textarea::-webkit-scrollbar-thumb:hover {
     transition: all 0.5s ease-in-out;
 }
 
+/* Single view - email panel centered */
 #panels-container.single-view #email-panel {
     width: 70%;
     margin: 0 auto;
     transition: all 0.5s ease-in-out;
 }
 
+/* Dual view - panels side by side */
 #panels-container.dual-view #email-panel,
 #panels-container.dual-view #analysis-panel {
     width: calc(50% - 10px);
     transition: all 0.5s ease-in-out;
 }
 
+/* Hide analysis panel when not active */
 #panels-container.single-view #analysis-panel {
     display: none;
 }
 
+/* Animation for Analysis Results panel */
 #analysis-panel {
     opacity: 0;
     transform: scale(0.8);
@@ -199,6 +195,7 @@ textarea::-webkit-scrollbar-thumb:hover {
     transform: scale(1);
 }
 
+/* Responsive adjustments */
 @media (max-width: 1024px) {
     #panels-container {
         flex-direction: column;
