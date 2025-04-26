@@ -114,123 +114,61 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Add a function to display the report in a popup box
-function showReportPopup(result) {
-    // Create the popup container
-    const popupContainer = document.createElement('div');
-    popupContainer.id = 'reportPopup';
-    popupContainer.style.cssText = `
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-    `;
-
-    // Create the popup content
-    const popupContent = document.createElement('div');
-    popupContent.style.cssText = `
-        background-color: white;
-        border-radius: 8px;
-        padding: 20px;
-        width: 80%;
-        max-width: 800px;
-        max-height: 90%;
-        overflow-y: auto;
-    `;
-
-    // Add the report content
-    popupContent.innerHTML = `
-        <h2>Email Analysis Report</h2>
-        <p><strong>Email ID:</strong> ${result.email_id}</p>
-        <p><strong>Risk Assessment:</strong> ${result.risk_assessment} (${result.confidence_score}%)</p>
-        <p>${result.explanation}</p>
-        <h3>Details:</h3>
-        <ul>
-            <li><strong>Spoofed Sender:</strong> ${result.spoofed_sender ? 'Yes' : 'No'}</li>
-            <li><strong>Suspicious Links:</strong>
-                <ul>
-                    ${result.suspicious_links.map(link => `<li>${link.url} - Issues: ${link.issues.join(', ')}</li>`).join('')}
-                </ul>
-            </li>
-            <li><strong>Urgency Indicators:</strong> ${result.urgency_indicators.join(', ')}</li>
-            <li><strong>Threat Indicators:</strong> ${result.threat_indicators.join(', ')}</li>
-        </ul>
-        <button id="closePopup" style="margin-top: 20px; padding: 10px 20px; background-color: #4285f4; color: white; border: none; border-radius: 4px; cursor: pointer;">Close</button>
-    `;
-
-    // Add the popup content to the container
-    popupContainer.appendChild(popupContent);
-
-    // Add the popup to the body
-    document.body.appendChild(popupContainer);
-
-    // Add event listener to close the popup
-    document.getElementById('closePopup').addEventListener('click', () => {
-        document.body.removeChild(popupContainer);
-    });
-}
-
-// Modify the analyze button click handler to show the popup
-analyzeBtn.addEventListener('click', async () => {
-    const emailText = emailInput.value.trim();
-    if (!emailText) {
-        alert('Please enter or paste an email to analyze');
-        return;
-    }
-
-    // Show loading indicator
-    resultsPlaceholder.classList.add('hidden');
-    resultsContainer.classList.add('hidden');
-    loadingIndicator.classList.remove('hidden');
-    
-    // Switch to dual view layout before analysis starts
-    panelsContainer.classList.remove('single-view');
-    panelsContainer.classList.add('dual-view');
-    
-    // Show analysis panel with animation after a tiny delay
-    if (analysisPanel) {
-        setTimeout(function() {
-            analysisPanel.classList.add('active');
-        }, 10);
-    }
-
-    try {
-        const response = await fetch('/analyze', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email_text: emailText }),
-        });
-
-        if (!response.ok) {
-            throw new Error(`Server responded with status: ${response.status}`);
-        }
-
-        const result = await response.json();
-        
-        if (result.error) {
-            alert(`Error: ${result.error}`);
-            loadingIndicator.classList.add('hidden');
-            resultsPlaceholder.classList.remove('hidden');
+    // Modify the analyze button click handler
+    analyzeBtn.addEventListener('click', async () => {
+        const emailText = emailInput.value.trim();
+        if (!emailText) {
+            alert('Please enter or paste an email to analyze');
             return;
         }
 
-        // Show the report in a popup
-        showReportPopup(result);
-    } catch (error) {
-        console.error('Error during analysis:', error);
-        alert(`Error: ${error.message}`);
-        loadingIndicator.classList.add('hidden');
-        resultsPlaceholder.classList.remove('hidden');
-    }
-});
+        // Show loading indicator
+        resultsPlaceholder.classList.add('hidden');
+        resultsContainer.classList.add('hidden');
+        loadingIndicator.classList.remove('hidden');
+        
+        // Switch to dual view layout before analysis starts
+        panelsContainer.classList.remove('single-view');
+        panelsContainer.classList.add('dual-view');
+        
+        // Show analysis panel with animation after a tiny delay
+        if (analysisPanel) {
+            setTimeout(function() {
+                analysisPanel.classList.add('active');
+            }, 10);
+        }
+
+        try {
+            const response = await fetch('/analyze', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email_text: emailText }),
+            });
+
+            if (!response.ok) {
+                throw new Error(`Server responded with status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            
+            if (result.error) {
+                alert(`Error: ${result.error}`);
+                loadingIndicator.classList.add('hidden');
+                resultsPlaceholder.classList.remove('hidden');
+                return;
+            }
+
+            // Display results directly in the analysis panel
+            displayResults(result);
+        } catch (error) {
+            console.error('Error during analysis:', error);
+            alert(`Error: ${error.message}`);
+            loadingIndicator.classList.add('hidden');
+            resultsPlaceholder.classList.remove('hidden');
+        }
+    });
 
     function displayResults(result) {
         // Hide loading indicator
@@ -434,57 +372,18 @@ window.addEventListener('DOMContentLoaded', async () => {
                 throw new Error('Failed to fetch the report');
             }
 
-            const reportHtml = await response.text();
+            const reportData = await response.json();
+            
+            // Switch to dual view and show analysis panel
+            panelsContainer.classList.remove('single-view');
+            panelsContainer.classList.add('dual-view');
+            
+            if (analysisPanel) {
+                analysisPanel.classList.add('active');
+            }
 
-            // Create a popup container
-            const popupContainer = document.createElement('div');
-            popupContainer.id = 'reportPopup';
-            popupContainer.style.cssText = `
-                position: fixed;
-                top: 0;
-                left: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.5);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                z-index: 1000;
-            `;
-
-            // Create the popup content
-            const popupContent = document.createElement('div');
-            popupContent.style.cssText = `
-                background-color: white;
-                border-radius: 8px;
-                padding: 20px;
-                width: 80%;
-                max-width: 800px;
-                max-height: 90%;
-                overflow-y: auto;
-            `;
-
-            popupContent.innerHTML = reportHtml;
-
-            // Add a close button
-            const closeButton = document.createElement('button');
-            closeButton.textContent = 'Close';
-            closeButton.style.cssText = `
-                margin-top: 20px;
-                padding: 10px 20px;
-                background-color: #4285f4;
-                color: white;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            `;
-            closeButton.addEventListener('click', () => {
-                document.body.removeChild(popupContainer);
-            });
-
-            popupContent.appendChild(closeButton);
-            popupContainer.appendChild(popupContent);
-            document.body.appendChild(popupContainer);
+            // Display results in the analysis panel
+            displayResults(reportData);
         } catch (error) {
             console.error('Error fetching the report:', error);
             alert('Failed to load the report. Please try again.');
