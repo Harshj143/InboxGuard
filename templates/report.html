@@ -1,75 +1,686 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Email Analysis Report</title>
+    <title>InboxGuard Analysis Report</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             margin: 0;
             padding: 0;
             background-color: #f4f4f9;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
             color: #333;
         }
-        .risk {
-            font-size: 1.2em;
-            font-weight: bold;
+
+        p {
+            font-size: 14px;
         }
-        .high-risk {
-            color: #f44336;
+
+        .container {
+            max-width: 800px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 3px 15px rgba(0, 0, 0, 0.1);
+            position: relative;
+            /* Add this to make the absolute positioning work */
         }
-        .details {
-            margin-top: 20px;
+
+        header {
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 15px;
+            position: relative;
+            /* Position relative for absolute positioning of the print button */
         }
-        .details h2 {
-            font-size: 1.1em;
+
+        .print-button {
+            position: absolute;
+            top: 3;
+            right: 0;
+            margin-right: 25px;
+            z-index: 10;
+        }
+
+        .print-button button {
+            padding: 8px 16px;
+            background-color: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .print-button button:hover {
+            background-color: #0d47a1;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
             margin-bottom: 10px;
         }
-        .details ul {
-            list-style: none;
-            padding: 0;
+
+        .logo i {
+            font-size: 1.5rem;
+            color: #1a73e8;
+            margin-right: 10px;
         }
-        .details ul li {
-            background: #f9f9f9;
-            margin: 5px 0;
+
+        .logo h1 {
+            margin: 0;
+            color: #1a73e8;
+            font-size: 1.5rem;
+        }
+
+        .timestamp {
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+
+        .risk-indicator {
+            display: flex;
+            align-items: center;
             padding: 10px;
-            border-left: 4px solid #4285f4;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* .risk-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+        } */
+
+        .risk-icon i {
+            font-size: 1.5em;
+        }
+
+        .risk-details h2 {
+            margin: 0 0 5px 0;
+            font-size: 20px;
+        }
+
+        .risk-confidence {
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .risk-summary {
+            font-size: 14px;
+        }
+
+        /* Risk Level Styles */
+        .risk-low {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .risk-low .risk-icon {
+            background-color: rgba(76, 175, 80, 0.2);
+        }
+
+        .risk-low h2,
+        .risk-low i,
+        .risk-low .risk-confidence {
+            color: #388e3c;
+        }
+
+        .risk-medium {
+            background-color: rgba(255, 152, 0, 0.1);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .risk-medium .risk-icon {
+            background-color: rgba(255, 152, 0, 0.2);
+        }
+
+        .risk-medium h2,
+        .risk-medium i,
+        .risk-medium .risk-confidence {
+            color: #f57c00;
+        }
+
+        .risk-high {
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .risk-high .risk-icon {
+            background-color: rgba(244, 67, 54, 0.2);
+        }
+
+        .risk-high h2,
+        .risk-high i,
+        .risk-high .risk-confidence {
+            color: #d32f2f;
+        }
+
+        .risk-critical {
+            background-color: rgba(183, 28, 28, 0.1);
+            border: 1px solid rgba(183, 28, 28, 0.3);
+        }
+
+        .risk-critical .risk-icon {
+            background-color: rgba(183, 28, 28, 0.2);
+        }
+
+        .risk-critical h2,
+        .risk-critical i,
+        .risk-critical .risk-confidence {
+            color: #b71c1c;
+        }
+
+        .explanation {
+            background-color: #e8f0fe;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .explanation h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            color: #1a73e8;
+        }
+
+        .explanation h3 i {
+            margin-right: 8px;
+        }
+
+        .indicators-section {
+            margin-bottom: 30px;
+        }
+
+        .indicators-section h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            color: #1a73e8;
+        }
+
+        .indicators-section h3 i {
+            margin-right: 8px;
+        }
+
+        .indicator-card {
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .indicator-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .indicator-card .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .indicator-card .header i {
+            margin-right: 8px;
+        }
+
+        .indicator-card .header h4 {
+            margin: 0;
+        }
+
+        .indicator-card ul {
+            margin: 10px 0 0 0;
+            padding-left: 25px;
+        }
+
+        .indicator-card ul li {
+            margin-bottom: 5px;
+        }
+
+        /* Indicator colors */
+        .color-red {
+            background-color: rgba(244, 67, 54, 0.1);
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
+
+        .color-red .header i,
+        .color-red .header h4 {
+            color: #d32f2f;
+        }
+
+        .color-orange {
+            background-color: rgba(255, 152, 0, 0.1);
+            border: 1px solid rgba(255, 152, 0, 0.3);
+        }
+
+        .color-orange .header i,
+        .color-orange .header h4 {
+            color: #f57c00;
+        }
+
+        .color-yellow {
+            background-color: rgba(255, 193, 7, 0.1);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .color-yellow .header i,
+        .color-yellow .header h4 {
+            color: #fbc02d;
+        }
+
+        .color-green {
+            background-color: rgba(76, 175, 80, 0.1);
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+
+        .color-green .header i,
+        .color-green .header h4 {
+            color: #388e3c;
+        }
+
+        .email-metadata {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 25px;
+        }
+
+        .email-metadata h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            color: #5f6368;
+        }
+
+        .email-metadata h3 i {
+            margin-right: 8px;
+        }
+
+        .metadata-grid {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            row-gap: 10px;
+        }
+
+        .metadata-label {
+            font-weight: 600;
+            color: #5f6368;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #5f6368;
+            font-size: 12px;
+            border-top: 1px solid #eaeaea;
+            padding-top: 20px;
+        }
+
+        .footer img {
+            height: 24px;
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+            }
+
+            .container {
+                box-shadow: none;
+                margin: 0;
+                max-width: 100%;
+            }
+
+            .no-print {
+                display: none;
+            }
+
+            .print-button {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .risk-indicator {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .risk-icon {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .print-button {
+                position: static;
+                margin-bottom: 15px;
+                text-align: right;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <h1>Email Analysis Report</h1>
-        <p><strong>Email ID:</strong> {{ result.email_id }}</p>
-        <p class="risk high-risk">Risk Assessment: {{ result.risk_assessment }} ({{ result.confidence_score }}%)</p>
-        <p>{{ result.explanation }}</p>
+        <!-- Print button moved to top right -->
+        <div class="print-button">
+            <button onclick="window.print()">
+                <i class="fas fa-print"></i> Print Report
+            </button>
+        </div>
 
-        <div class="details">
-            <h2>Details:</h2>
-            <ul>
-                <li><strong>Spoofed Sender:</strong> {{ 'Yes' if result.spoofed_sender else 'No' }}</li>
-                <li><strong>Suspicious Links:</strong>
+        <header>
+            <div class="logo">
+                <i class="fas fa-shield-alt"></i>
+                <h1>InboxGuard</h1>
+            </div>
+            <p>AI-powered phishing email analysis</p>
+            <p class="timestamp">Report generated: {{ generation_date }}</p>
+        </header>
+
+        <!-- Email Metadata -->
+        <div class="email-metadata">
+            <h4><i class="fas fa-envelope"></i> Email Details</h3>
+                <div class="metadata-grid">
+                    <div class="metadata-label">From:</div>
+                    <div>{{ result.from }}</div>
+
+                    <div class="metadata-label">Subject:</div>
+                    <div>{{ result.subject }}</div>
+
+                    <div class="metadata-label">Date:</div>
+                    <div>{{ result.date }}</div>
+
+                    <div class="metadata-label">Email ID:</div>
+                    <div>{{ result.email_id }}</div>
+                </div>
+        </div>
+
+        <!-- Risk Assessment -->
+        <div class="explanation" style="background-color: rgba(244, 67, 54, 0.1);">
+            <h3>
+                <i class="fas {{ 'fa-check-circle' if result.risk_assessment == 'Low' else 'fa-exclamation-circle' if result.risk_assessment == 'Medium' else 'fa-exclamation-triangle' if result.risk_assessment == 'High' else 'fa-skull-crossbones' }}" style="color: #d32f2f;"></i>
+                <span style="color: #d32f2f;">Risk Level: {{ result.risk_assessment }}</span>
+            </h3>
+            <p style="color: #d32f2f; font-weight: 500; margin-bottom: 10px;">Phishing Confidence: {{ result.confidence_score }}%</p>
+            <p>
+                {{ 'This email appears mostly legitimate' if result.risk_assessment == 'Low' else
+                'Exercise caution with this email' if result.risk_assessment == 'Medium' else
+                'This email is likely a phishing attempt' if result.risk_assessment == 'High' else
+                'This is almost certainly a phishing attack' }}
+            </p>
+        </div>
+
+        <!-- Explanation -->
+        <div class="explanation">
+            <h3><i class="fas fa-info-circle"></i> Analysis Summary</h3>
+            <p>{{ result.explanation }}</p>
+        </div>
+
+        <!-- Detected Indicators -->
+        <div class="indicators-section">
+            <h3><i class="fas fa-list-ul"></i> Detected Indicators</h3>
+
+            {% if result.spoofed_sender %}
+            <div class="indicator-card color-red">
+                <div class="header">
+                    <i class="fas fa-user-secret"></i>
+                    <h4>Suspicious Sender</h4>
+                </div>
+                <p>{{ result.sender_analysis|default('Sender appears to be spoofed') }}</p>
+            </div>
+            {% endif %}
+
+            {% if result.suspicious_links and result.suspicious_links|length > 0 %}
+            <div class="indicator-card color-red">
+                <div class="header">
+                    <i class="fas fa-link"></i>
+                    <h4>Suspicious Links</h4>
+                </div>
+                {% for link in result.suspicious_links %}
+                <div
+                    style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(244, 67, 54, 0.2);">
+                    <div style="font-weight: 500;">{{ link.text|default(link.url) }}</div>
+                    <div style="font-size: 14px; margin-top: 5px; margin-bottom: 5px; color: #d32f2f;">Issues detected:
+                    </div>
                     <ul>
-                        {% for link in result.suspicious_links %}
-                        <li>{{ link.url }} - Issues: {{ ", ".join(link.issues) }}</li>
+                        {% for issue in link.issues %}
+                        <li>{{ issue }}</li>
                         {% endfor %}
                     </ul>
-                </li>
-                <li><strong>Urgency Indicators:</strong> {{ ", ".join(result.urgency_indicators) }}</li>
-                <li><strong>Threat Indicators:</strong> {{ ", ".join(result.threat_indicators) }}</li>
-            </ul>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            {% if result.urgency_indicators and result.urgency_indicators|length > 0 %}
+            <div class="indicator-card color-orange">
+                <div class="header">
+                    <i class="fas fa-clock"></i>
+                    <h4>Urgency Tactics</h4>
+                </div>
+                <ul>
+                    {% for indicator in result.urgency_indicators %}
+                    <li>{{ indicator }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if result.threat_indicators and result.threat_indicators|length > 0 %}
+            <div class="indicator-card color-orange">
+                <div class="header">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h4>Threat Manipulation</h4>
+                </div>
+                <ul>
+                    {% for indicator in result.threat_indicators %}
+                    <li>{{ indicator }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if result.data_requests and result.data_requests|length > 0 %}
+            <div class="indicator-card color-red">
+                <div class="header">
+                    <i class="fas fa-id-card"></i>
+                    <h4>Sensitive Information Requests</h4>
+                </div>
+                <ul>
+                    {% for request in result.data_requests %}
+                    <li>{{ request }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if result.linguistic_manipulation and result.linguistic_manipulation|length > 0 %}
+            <div class="indicator-card color-yellow">
+                <div class="header">
+                    <i class="fas fa-comment-dots"></i>
+                    <h4>Manipulation Tactics</h4>
+                </div>
+                <ul>
+                    {% for tactic in result.linguistic_manipulation %}
+                    <li>{{ tactic }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+
+            {% if result.grammar_spelling_issues %}
+            <div class="indicator-card color-yellow">
+                <div class="header">
+                    <i class="fas fa-spell-check"></i>
+                    <h4>Grammar & Spelling Issues</h4>
+                </div>
+                <p>Significant grammar or spelling issues detected in the email, which is common in phishing attempts.
+                </p>
+            </div>
+            {% endif %}
+
+            {% if result.impersonation_attempt %}
+            <div class="indicator-card color-red">
+                <div class="header">
+                    <i class="fas fa-mask"></i>
+                    <h4>Impersonation Attempt</h4>
+                </div>
+                <p>Attempting to impersonate: {{ result.impersonation_attempt }}</p>
+            </div>
+            {% endif %}
+
+            {% if not result.spoofed_sender and
+            (not result.suspicious_links or result.suspicious_links|length == 0) and
+            (not result.urgency_indicators or result.urgency_indicators|length == 0) and
+            (not result.threat_indicators or result.threat_indicators|length == 0) and
+            (not result.data_requests or result.data_requests|length == 0) and
+            (not result.linguistic_manipulation or result.linguistic_manipulation|length == 0) and
+            not result.grammar_spelling_issues and
+            not result.impersonation_attempt %}
+            <div class="indicator-card color-green">
+                <div class="header">
+                    <i class="fas fa-check-circle"></i>
+                    <h4>No Phishing Indicators Detected</h4>
+                </div>
+                <p>This email appears to be legitimate based on our analysis.</p>
+            </div>
+            {% endif %}
         </div>
+
+        
     </div>
+
+    <!-- Add the PDF download functionality back -->
+    <script>
+        function downloadPDF() {
+            // First, add the library to the page if it doesn't exist
+            if (!window.html2pdf) {
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+                script.onload = generatePDF;
+                script.onerror = function () {
+                    alert('Could not load PDF generation library. Please check your internet connection.');
+                };
+                document.head.appendChild(script);
+            } else {
+                generatePDF();
+            }
+        }
+
+        function generatePDF() {
+            // Show loading indicator
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.id = 'pdf-loading';
+            loadingIndicator.style.position = 'fixed';
+            loadingIndicator.style.top = '0';
+            loadingIndicator.style.left = '0';
+            loadingIndicator.style.width = '100%';
+            loadingIndicator.style.height = '100%';
+            loadingIndicator.style.backgroundColor = 'rgba(255, 255, 255, 0.8)';
+            loadingIndicator.style.display = 'flex';
+            loadingIndicator.style.justifyContent = 'center';
+            loadingIndicator.style.alignItems = 'center';
+            loadingIndicator.style.zIndex = '9999';
+
+            const spinnerContainer = document.createElement('div');
+            spinnerContainer.style.textAlign = 'center';
+
+            const spinner = document.createElement('div');
+            spinner.style.border = '6px solid #f3f3f3';
+            spinner.style.borderTop = '6px solid #3498db';
+            spinner.style.borderRadius = '50%';
+            spinner.style.width = '50px';
+            spinner.style.height = '50px';
+            spinner.style.animation = 'spin 2s linear infinite';
+            spinner.style.margin = '0 auto 15px auto';
+
+            const loadingText = document.createElement('div');
+            loadingText.textContent = 'Generating PDF...';
+            loadingText.style.fontWeight = 'bold';
+
+            // Add keyframes for spinner animation
+            const style = document.createElement('style');
+            style.textContent = '@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }';
+            document.head.appendChild(style);
+
+            spinnerContainer.appendChild(spinner);
+            spinnerContainer.appendChild(loadingText);
+            loadingIndicator.appendChild(spinnerContainer);
+            document.body.appendChild(loadingIndicator);
+
+            // Hide print button for PDF generation
+            const printButton = document.querySelector('.print-button');
+            const originalDisplayPrintButton = printButton.style.display;
+            printButton.style.display = 'none';
+
+            // Get the container element that will be converted to PDF
+            const container = document.querySelector('.container');
+
+            // Configure PDF options
+            const opt = {
+                margin: [10, 10, 10, 10],
+                filename: 'inboxguard-report.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: {
+                    scale: 2,
+                    useCORS: true,
+                    logging: false,
+                    removeContainer: false,
+                    imageTimeout: 15000,
+                    letterRendering: true,
+                    allowTaint: true
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait',
+                    compress: true
+                }
+            };
+
+            // Use the more reliable promise-based approach
+            html2pdf()
+                .from(container)
+                .set(opt)
+                .outputPdf('save')
+                .then(() => {
+                    // Clean up
+                    document.body.removeChild(loadingIndicator);
+                    printButton.style.display = originalDisplayPrintButton;
+                })
+                .catch((error) => {
+                    console.error('PDF generation failed:', error);
+                    alert("PDF generation failed. Please try using the Print option instead, which will allow you to save as PDF.");
+                    document.body.removeChild(loadingIndicator);
+                    printButton.style.display = originalDisplayPrintButton;
+                });
+        }
+    </script>
 </body>
+
 </html>
