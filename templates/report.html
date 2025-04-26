@@ -58,16 +58,16 @@
         <div class="details">
             <h2>Details:</h2>
             <ul>
-                <li><strong>Spoofed Sender:</strong> {{ 'Yes' if result.details.spoofed_sender else 'No' }}</li>
+                <li><strong>Spoofed Sender:</strong> {{ 'Yes' if result.spoofed_sender else 'No' }}</li>
                 <li><strong>Suspicious Links:</strong>
                     <ul>
-                        {% for link in result.details.suspicious_links %}
+                        {% for link in result.suspicious_links %}
                         <li>{{ link.url }} - Issues: {{ ", ".join(link.issues) }}</li>
                         {% endfor %}
                     </ul>
                 </li>
-                <li><strong>Urgency Indicators:</strong> {{ ", ".join(result.details.urgency_indicators) }}</li>
-                <li><strong>Threat Indicators:</strong> {{ ", ".join(result.details.threat_indicators) }}</li>
+                <li><strong>Urgency Indicators:</strong> {{ ", ".join(result.urgency_indicators) }}</li>
+                <li><strong>Threat Indicators:</strong> {{ ", ".join(result.threat_indicators) }}</li>
             </ul>
         </div>
     </div>

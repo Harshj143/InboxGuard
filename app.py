@@ -304,24 +304,32 @@ def mock_analyze_email(email_text):
 def index():
     return render_template('index.html')
 
+# Store analysis results temporarily in memory
+analysis_results = {}
+
 @app.route('/analyze', methods=['POST'])
 def analyze():
     data = request.json
     email_text = data.get('email_text', '')
-    
+
     if not email_text:
         return jsonify({"error": "No email text provided"}), 400
-    
+
     # For development/demo, add a small delay to simulate processing
     time.sleep(1.5)
-    
+
     # Use the real Gemini analysis or the mock function for testing
     if GOOGLE_API_KEY:
         result = analyze_email_with_gemini(email_text)
     else:
         # Fall back to mock function if no API key is provided
         result = mock_analyze_email(email_text)
-    
+
+    # Generate a unique email_id and store the result
+    email_id = str(len(analysis_results) + 1)
+    result['email_id'] = email_id
+    analysis_results[email_id] = result
+
     return jsonify(result)
 
 @app.route('/preview', methods=['POST'])
@@ -346,31 +354,14 @@ def preview_link():
 @app.route('/report', methods=['GET'])
 def report():
     email_id = request.args.get('email_id')
-    if not email_id:
-        return "<h1>Error: No email ID provided</h1>", 400
+    if not email_id or email_id not in analysis_results:
+        return "<h1>Error: Invalid or missing email ID</h1>", 400
 
-    # Mock data for demonstration purposes
-    # In a real application, fetch the analysis result from a database or cache
-    mock_result = {
-        "email_id": email_id,
-        "risk_assessment": "High",
-        "confidence_score": 85,
-        "explanation": "This email contains suspicious links and urgency tactics.",
-        "details": {
-            "spoofed_sender": True,
-            "suspicious_links": [
-                {
-                    "url": "http://example.com",
-                    "issues": ["Uses URL shortening service", "Not using HTTPS"]
-                }
-            ],
-            "urgency_indicators": ["Immediate action required"],
-            "threat_indicators": ["Account suspension threat"]
-        }
-    }
+    # Fetch the analysis result using the email_id
+    result = analysis_results[email_id]
 
     # Render the result in a simple HTML page
-    return render_template('report.html', result=mock_result)
+    return render_template('report.html', result=result)
 
 if __name__ == '__main__':
     app.run(debug=True)

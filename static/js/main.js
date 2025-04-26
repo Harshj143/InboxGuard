@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             const result = await response.json();
-            
+
             if (result.error) {
                 alert(`Error: ${result.error}`);
                 loadingIndicator.classList.add('hidden');
@@ -125,6 +125,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             displayResults(result);
+
+            // Redirect to the report page with the email_id
+            window.location.href = `/report?email_id=${result.email_id}`;
         } catch (error) {
             console.error('Error during analysis:', error);
             alert(`Error: ${error.message}`);
