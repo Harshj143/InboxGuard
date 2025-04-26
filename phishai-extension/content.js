@@ -64,9 +64,26 @@ function createFloatingIcon(platform) {
   
   // Create the icon
   const iconInner = document.createElement('div');
+  iconInner.style.cssText = `
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  `;
+  
   // Explicitly set the full path for the icon image using chrome.runtime.getURL
   const iconPath = chrome.runtime.getURL("Icon2.png");
-  iconInner.innerHTML = `<img src="${iconPath}" alt="" style="width: 36px; height: 36px;" viewBox="0 0 36 36">`;
+  const iconImg = document.createElement('img');
+  iconImg.src = iconPath;
+  iconImg.alt = "InboxGuard";
+  iconImg.style.cssText = `
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  `;
+  iconInner.appendChild(iconImg);
   
   // Create the status indicator
   const statusIndicator = document.createElement('div');

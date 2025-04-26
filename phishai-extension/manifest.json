@@ -31,16 +31,20 @@
       "run_at": "document_idle"
     }
   ],
+  "web_accessible_resources": [{
+    "resources": ["Icon2.png"],
+    "matches": ["<all_urls>"]
+  }],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; connect-src 'self' http://127.0.0.1:5000 http://localhost:5000; img-src 'self' data:;"
   },
   "icons": {
-    "16": "icon.png",
-    "48": "icon.png",
-    "128": "icon.png"
+    "16": "Icon2.png",
+    "48": "Icon2.png",
+    "128": "Icon2.png"
   },
   "action": {
     "default_popup": "popup.html",
-    "default_icon": "icon.png"
+    "default_icon": "Icon2.png"
   }
 }
