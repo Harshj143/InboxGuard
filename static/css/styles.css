@@ -6,9 +6,12 @@
 }
 
 @keyframes pulse {
-    0%, 100% {
+
+    0%,
+    100% {
         opacity: 1;
     }
+
     50% {
         opacity: .5;
     }
@@ -85,8 +88,13 @@ textarea::-webkit-scrollbar-thumb:hover {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 /* Card hover effects */
@@ -147,12 +155,59 @@ textarea::-webkit-scrollbar-thumb:hover {
     .hide-on-mobile {
         display: none;
     }
-    
+
     .mobile-full-width {
         width: 100%;
     }
-    
+
     .mobile-padding {
         padding: 1rem;
+    }
+}
+
+#panels-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    transition: all 0.5s ease-in-out;
+}
+
+#panels-container.single-view #email-panel {
+    width: 70%;
+    margin: 0 auto;
+    transition: all 0.5s ease-in-out;
+}
+
+#panels-container.dual-view #email-panel,
+#panels-container.dual-view #analysis-panel {
+    width: calc(50% - 10px);
+    transition: all 0.5s ease-in-out;
+}
+
+#panels-container.single-view #analysis-panel {
+    display: none;
+}
+
+#analysis-panel {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.5s ease-in-out;
+}
+
+#analysis-panel.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+@media (max-width: 1024px) {
+    #panels-container {
+        flex-direction: column;
+    }
+    
+    #panels-container.single-view #email-panel,
+    #panels-container.dual-view #email-panel,
+    #panels-container.dual-view #analysis-panel {
+        width: 100%;
+        margin: 0;
     }
 }
