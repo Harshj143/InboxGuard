@@ -477,12 +477,12 @@ function displayResults(data, container) {
     newScanButton.addEventListener('click', () => scanCurrentEmail(true));
   }
 
-  // Modify the "View Full Report" button to redirect to the main website and trigger a popup
+  // Modify the "View Full Report" button to open the main website in a new tab
   const detailsButton = document.getElementById('inboxguard-details-btn');
   if (detailsButton) {
     detailsButton.addEventListener('click', () => {
       const reportUrl = `http://127.0.0.1:5000/?email_id=${data.email_id}`;
-      window.location.href = reportUrl;
+      window.open(reportUrl, '_blank');
     });
   }
 }
