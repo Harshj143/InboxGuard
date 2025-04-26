@@ -12,6 +12,19 @@
     "http://localhost:5000/*",
     "http://127.0.0.1:5000/*"
   ],
+  "content_scripts": [
+    {
+      "matches": [
+        "*://mail.google.com/*",
+        "*://outlook.live.com/*",
+        "*://outlook.office.com/*",
+        "*://mail.yahoo.com/*"
+      ],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle"
+    }
+  ],
   "icons": {
     "16": "icon.png",
     "48": "icon.png",
