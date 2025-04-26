@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,68 +8,19 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
-    <style>
-        #modalSandboxFrame {
-            width: 100%;
-            height: 80vh; /* Make the iframe taller to fit more content */
-            border: none;
-        }
-        
-        /* Layout management for panels */
-        #panels-container {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
-            transition: all 0.5s ease-in-out;
-        }
-        
-        /* Single view - email panel centered */
-        #panels-container.single-view #email-panel {
-            width: 70%;
-            margin: 0 auto;
-            transition: all 0.5s ease-in-out;
-        }
-        
-        /* Dual view - panels side by side */
-        #panels-container.dual-view #email-panel,
-        #panels-container.dual-view #analysis-panel {
-            width: calc(50% - 10px);
-            transition: all 0.5s ease-in-out;
-        }
-        
-        /* Hide analysis panel when not active */
-        #panels-container.single-view #analysis-panel {
-            display: none;
-        }
-        
-        /* Animation for Analysis Results panel */
-        #analysis-panel {
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.5s ease-in-out;
-        }
-        
-        #analysis-panel.active {
-            opacity: 1;
-            transform: scale(1);
-        }
-        
-        /* Responsive adjustments */
-        @media (max-width: 1024px) {
-            #panels-container {
-                flex-direction: column;
-            }
-            
-            #panels-container.single-view #email-panel,
-            #panels-container.dual-view #email-panel,
-            #panels-container.dual-view #analysis-panel {
-                width: 100%;
-                margin: 0;
-            }
-        }
-    </style>
+
 </head>
+
 <body class="bg-gray-50 min-h-screen">
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox" />
+            <div class="slider">
+                <i class="fas fa-moon icon moon"></i>
+                <i class="fas fa-sun icon sun"></i>
+            </div>
+        </label>
+    </div>
     <div class="container mx-auto px-4 py-8">
         <header class="mb-10 text-center">
             <div class="flex items-center justify-center mb-4">
@@ -78,8 +30,8 @@
             <p class="text-lg text-gray-600">AI-powered phishing email analysis</p>
             <p><a href="resource.html">Resources</a></p>
         </header>
-       
-        
+
+
         <!-- Updated panels container with ID for layout control -->
         <div id="panels-container" class="single-view">
             <!-- Left Panel - Email Input -->
@@ -89,39 +41,45 @@
                         <i class="fas fa-envelope mr-2"></i> Email Content
                     </h2>
                 </div>
-                
+
                 <div class="p-6">
-                    <textarea id="emailInput" class="w-full h-64 p-4 border rounded-lg focus:ring focus:ring-blue-300 focus:border-blue-500 resize-none" 
+                    <textarea id="emailInput"
+                        class="w-full h-64 p-4 border rounded-lg focus:ring focus:ring-blue-300 focus:border-blue-500 resize-none"
                         placeholder="Paste your suspicious email here..."></textarea>
-                    
+
                     <div class="mt-6 flex justify-between">
-                        <button id="clearBtn" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 flex items-center">
+                        <button id="clearBtn"
+                            class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 flex items-center">
                             <i class="fas fa-trash-alt mr-2"></i> Clear
                         </button>
-                        <button id="analyzeBtn" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center">
+                        <button id="analyzeBtn"
+                            class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center">
                             <i class="fas fa-search mr-2"></i> Analyze Email
                         </button>
                     </div>
-                    
+
                     <div class="mt-8">
                         <h3 class="text-lg font-medium text-gray-700 mb-3 flex items-center">
                             <i class="fas fa-lightbulb mr-2 text-yellow-500"></i> Try an example:
                         </h3>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-                            <button class="example-btn p-3 text-sm bg-blue-50 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-100 transition-all">
+                            <button
+                                class="example-btn p-3 text-sm bg-blue-50 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-100 transition-all">
                                 <i class="fas fa-university mr-1"></i> Bank Alert
                             </button>
-                            <button class="example-btn p-3 text-sm bg-blue-50 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-100 transition-all">
+                            <button
+                                class="example-btn p-3 text-sm bg-blue-50 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-100 transition-all">
                                 <i class="fas fa-key mr-1"></i> Password Reset
                             </button>
-                            <button class="example-btn p-3 text-sm bg-blue-50 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-100 transition-all">
+                            <button
+                                class="example-btn p-3 text-sm bg-blue-50 border border-blue-200 text-blue-700 rounded-lg hover:bg-blue-100 transition-all">
                                 <i class="fas fa-box mr-1"></i> Package Delivery
                             </button>
                         </div>
                     </div>
                 </div>
             </div>
-            
+
             <!-- Right Panel - Analysis Results -->
             <div id="analysis-panel" class="bg-white rounded-xl shadow-md overflow-hidden">
                 <div class="bg-blue-600 px-6 py-4">
@@ -129,26 +87,28 @@
                         <i class="fas fa-chart-bar mr-2"></i> Analysis Results
                     </h2>
                 </div>
-                
+
                 <div class="p-6">
                     <!-- Initial state -->
                     <div id="resultsPlaceholder" class="flex flex-col items-center justify-center h-64 text-gray-400">
                         <i class="fas fa-search text-5xl mb-4 opacity-30"></i>
                         <p>Submit an email to see the analysis results</p>
                     </div>
-                    
+
                     <!-- Loading state -->
                     <div id="loadingIndicator" class="hidden flex flex-col items-center justify-center h-64">
-                        <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4"></div>
+                        <div
+                            class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mb-4">
+                        </div>
                         <p class="text-blue-600">Analyzing with Gemini AI...</p>
                         <p class="text-sm text-gray-500 mt-2">This may take a few seconds</p>
                     </div>
-                    
+
                     <!-- Results -->
                     <div id="resultsContainer" class="hidden">
                         <!-- Risk indicator -->
                         <div id="riskIndicator" class="mb-6 p-5 rounded-lg"></div>
-                        
+
                         <!-- Explanation -->
                         <div class="mb-6">
                             <h3 class="font-medium text-gray-700 mb-2 flex items-center">
@@ -156,7 +116,7 @@
                             </h3>
                             <div id="explanation" class="p-4 bg-blue-50 rounded-lg text-gray-700"></div>
                         </div>
-                        
+
                         <!-- Detailed indicators -->
                         <div>
                             <h3 class="font-medium text-gray-700 mb-2 flex items-center">
@@ -170,7 +130,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Link Preview Sandbox -->
         <div class="mt-10 bg-white rounded-xl shadow-md overflow-hidden">
             <div class="bg-gray-100 px-6 py-4 border-b">
@@ -180,11 +140,14 @@
             </div>
             <div class="p-6">
                 <form id="previewForm" class="flex flex-col gap-4">
-                    <input type="url" id="urlInput" class="w-full p-3 border rounded-lg" placeholder="Enter URL to preview" required>
-                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Preview Link</button>
+                    <input type="url" id="urlInput" class="w-full p-3 border rounded-lg"
+                        placeholder="Enter URL to preview" required>
+                    <button type="submit" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Preview
+                        Link</button>
                 </form>
                 <div id="previewContainer" class="mt-6 hidden">
-                    <iframe id="sandboxFrame" sandbox="allow-scripts allow-same-origin" class="w-full h-64 border rounded-lg"></iframe>
+                    <iframe id="sandboxFrame" sandbox="allow-scripts allow-same-origin"
+                        class="w-full h-64 border rounded-lg"></iframe>
                 </div>
             </div>
         </div>
@@ -200,32 +163,38 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                     <div class="p-4 border rounded-lg">
                         <div class="flex items-center mb-3">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
                                 <i class="fas fa-brain"></i>
                             </div>
                             <h3 class="font-medium">Google Gemini Powered</h3>
                         </div>
-                        <p class="text-sm text-gray-600">Uses Google's Gemini AI to analyze the content, tone, and intent of emails to identify phishing attempts that traditional systems might miss.</p>
+                        <p class="text-sm text-gray-600">Uses Google's Gemini AI to analyze the content, tone, and
+                            intent of emails to identify phishing attempts that traditional systems might miss.</p>
                     </div>
-                    
+
                     <div class="p-4 border rounded-lg">
                         <div class="flex items-center mb-3">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
                                 <i class="fas fa-link"></i>
                             </div>
                             <h3 class="font-medium">URL Inspection</h3>
                         </div>
-                        <p class="text-sm text-gray-600">Analyzes embedded links for suspicious patterns, shortened URLs, misleading domains, and other indicators of phishing attempts.</p>
+                        <p class="text-sm text-gray-600">Analyzes embedded links for suspicious patterns, shortened
+                            URLs, misleading domains, and other indicators of phishing attempts.</p>
                     </div>
-                    
+
                     <div class="p-4 border rounded-lg">
                         <div class="flex items-center mb-3">
-                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
+                            <div
+                                class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 mr-3">
                                 <i class="fas fa-shield-alt"></i>
                             </div>
                             <h3 class="font-medium">Risk Assessment</h3>
                         </div>
-                        <p class="text-sm text-gray-600">Provides a detailed risk assessment with confidence score and specific explanations of detected phishing indicators.</p>
+                        <p class="text-sm text-gray-600">Provides a detailed risk assessment with confidence score and
+                            specific explanations of detected phishing indicators.</p>
                     </div>
                 </div>
             </div>
@@ -240,15 +209,102 @@
                 <button id="closeModal" class="text-gray-500 hover:text-gray-700">&times;</button>
             </div>
             <div class="p-4">
-                <iframe id="modalSandboxFrame" sandbox="allow-scripts allow-same-origin" class="w-full h-64 border rounded-lg"></iframe>
+                <iframe id="modalSandboxFrame" sandbox="allow-scripts allow-same-origin"
+                    class="w-full h-64 border rounded-lg"></iframe>
             </div>
         </div>
     </div>
-    
 
-    
+
+
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const toggleSwitch = document.querySelector('#checkbox');
+            const htmlEl = document.documentElement;
+
+            // Set dark mode as default if no preference is stored
+            if (!localStorage.getItem('theme')) {
+                localStorage.setItem('theme', 'dark');
+                htmlEl.setAttribute('data-theme', 'dark');
+                toggleSwitch.checked = true;
+            } else {
+                // Use saved theme from local storage
+                const savedTheme = localStorage.getItem('theme');
+                htmlEl.setAttribute('data-theme', savedTheme);
+
+                // Update toggle button to match theme
+                if (savedTheme === 'dark') {
+                    toggleSwitch.checked = true;
+                } else {
+                    toggleSwitch.checked = false;
+                }
+            }
+
+            // Listen for toggle changes
+            toggleSwitch.addEventListener('change', switchTheme);
+
+            function switchTheme(e) {
+                if (e.target.checked) {
+                    htmlEl.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+
+                    // Add a subtle animation effect when switching to dark
+                    document.body.style.transition = 'background-color 0.5s ease';
+
+                    // Optional notification
+                    showThemeNotification('Dark mode enabled');
+                } else {
+                    htmlEl.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+
+                    // Add a subtle animation effect when switching to light
+                    document.body.style.transition = 'background-color 0.5s ease';
+
+                    // Optional notification
+                    showThemeNotification('Light mode enabled');
+                }
+            }
+
+            // Optional: Add a subtle notification when theme changes
+            function showThemeNotification(message) {
+                // Create notification if it doesn't exist
+                if (!document.getElementById('theme-notification')) {
+                    const notification = document.createElement('div');
+                    notification.id = 'theme-notification';
+                    notification.style.cssText = `
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                padding: 10px 20px;
+                background-color: var(--panel-bg);
+                color: var(--text-primary);
+                border: 1px solid var(--panel-border);
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                font-size: 14px;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.3s ease, transform 0.3s ease;
+                z-index: 1000;
+            `;
+                    document.body.appendChild(notification);
+                }
+
+                const notification = document.getElementById('theme-notification');
+                notification.textContent = message;
+
+                // Show notification
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateY(0)';
+
+                // Hide after 2 seconds
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateY(20px)';
+                }, 2000);
+            }
+        });
         document.getElementById('previewForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const url = document.getElementById('urlInput').value;
@@ -278,4 +334,5 @@
         });
     </script>
 </body>
+
 </html>
