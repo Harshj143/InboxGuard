@@ -1,137 +1,323 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Resources | InboxGuard</title>
+
+    <!-- CSS Frameworks -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom Styles -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <style>
-        /* Enhanced styles for interactivity */
-        .interactive-card {
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            cursor: pointer;
-        }
+        /* Animation keyframes */
+        @keyframes gradientBg {
 
-        .interactive-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            0%,
+            100% {
+                background-position: 0% 50%
+            }
+
+            50% {
+                background-position: 100% 50%
+            }
         }
 
         .gradient-bg {
-            background: linear-gradient(135deg, var(--header-bg), var(--highlight));
-            color: var(--text-primary);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(-45deg, #3b82f6, #2563eb, #1d4ed8, #1e40af);
+            background-size: 400% 400%;
+            animation: gradientBg 15s ease infinite;
         }
 
-        .gradient-bg h2 {
-            font-size: 1.5rem;
-            font-weight: bold;
+        /* Card hover */
+        .card-hover {
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
         }
 
-        .gradient-bg a {
-            text-decoration: none;
-            color: var(--highlight);
-            transition: color 0.3s ease;
+        .card-hover:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 25px rgba(0, 0, 0, 0.1), 0 10px 10px rgba(0, 0, 0, 0.04);
         }
 
-        .gradient-bg a:hover {
-            color: var(--btn-primary-hover);
-        }
-
+        /* Icon bullets */
         .icon-bullet {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 1rem;
         }
 
         .icon-bullet i {
             font-size: 1.2rem;
-            color: var(--highlight);
-            margin-right: 10px;
+            color: #2563eb;
+            margin-right: 0.5rem;
         }
 
-        .icon-bullet span {
-            font-size: 1rem;
-            color: var(--text-secondary);
+        /* Dark/Light Toggle */
+        .theme-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 26px;
         }
 
-        .btn-primary {
-            background-color: var(--btn-primary-bg);
-            color: var(--text-primary);
-            padding: 10px 20px;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
+        .theme-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
         }
 
-        .btn-primary:hover {
-            background-color: var(--btn-primary-hover);
+        .slider {
+            position: absolute;
+            inset: 0;
+            background: #ccc;
+            border-radius: 13px;
+            transition: .3s;
+        }
+
+        .slider:before {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            border-radius: 50%;
+            transition: .3s;
+        }
+
+        .theme-switch input:checked+.slider {
+            background: #555;
+        }
+
+        .theme-switch input:checked+.slider:before {
+            transform: translateX(24px);
+        }
+
+        .slider .fa-moon,
+        .slider .fa-sun {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            pointer-events: none;
+        }
+
+        .slider .fa-moon {
+            left: 6px;
+            color: #fff;
+        }
+
+        .slider .fa-sun {
+            right: 6px;
+            color: #facc15;
+        }
+
+        /* Theme colors */
+        :root[data-theme="light"] {
+            --bg: #f3f4f6;
+            --nav-bg: #fff;
+            --nav-text: #000;
+            --text: #000;
+        }
+
+        :root[data-theme="dark"] {
+            --bg: #1f2937;
+            --nav-bg: rgba(0, 0, 0, 0.8);
+            --nav-text: #3b3732;
+            --text: #544d46;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            transition: .3s;
+        }
+
+        .navbar {
+            background: var(--nav-bg) !important;
+        }
+
+        .navbar-brand,
+        .navbar-nav .nav-link {
+            color: var(--nav-text) !important;
+            transition: .3s;
         }
     </style>
 </head>
 
 <body>
-    <h1>Resources</h1>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-shield-alt text-blue-600 me-2"></i>InboxGuard
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navMenu">
+                <ul class="navbar-nav align-items-center me-3">
+                    <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="/resource.html">Resources</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/#working">Site Working</a></li>
+                </ul>
+                <label class="theme-switch mb-0">
+                    <input type="checkbox" id="themeToggle">
+                    <span class="slider">
+                        <i class="fas fa-moon"></i>
+                        <i class="fas fa-sun"></i>
+                    </span>
+                </label>
+            </div>
+        </div>
+    </nav>
 
-    <!-- Blogs Section -->
-    <section id="blogs" class="gradient-bg">
-        <h2>Recent Blogs</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a href="https://example.com/blog1" target="_blank" class="interactive-card">
-                <h3>Understanding Phishing Tactics in 2025</h3>
-                <p>Learn about the latest phishing tactics and how to stay safe.</p>
-            </a>
-            <a href="https://example.com/blog2" target="_blank" class="interactive-card">
-                <h3>How to Protect Your Inbox from Cyber Threats</h3>
-                <p>Discover effective strategies to secure your email.</p>
-            </a>
-            <a href="https://example.com/blog3" target="_blank" class="interactive-card">
-                <h3>Top 10 Email Security Practices</h3>
-                <p>Follow these best practices to enhance your email security.</p>
-            </a>
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white text-center py-5 mt-5">
+        <div class="container">
+            <h1 class="display-4 mb-3">Resources & Insights</h1>
+            <p class="lead mb-0">Explore our blogs, news, phishing trends, and FAQs to stay secure.</p>
         </div>
     </section>
 
-    <!-- News Articles Section -->
-    <section id="news" class="gradient-bg mt-6">
-        <h2>Latest News</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <a href="https://example.com/news1" target="_blank" class="interactive-card">
-                <h3>Major Phishing Attack Targets Financial Institutions</h3>
-                <p>Read about the latest phishing attack and its impact.</p>
-            </a>
-            <a href="https://example.com/news2" target="_blank" class="interactive-card">
-                <h3>New AI Tools Combat Email Fraud</h3>
-                <p>Explore how AI is revolutionizing email security.</p>
-            </a>
-            <a href="https://example.com/news3" target="_blank" class="interactive-card">
-                <h3>Cybersecurity Trends to Watch in 2025</h3>
-                <p>Stay updated on the latest trends in cybersecurity.</p>
-            </a>
+    <!-- Recent Blogs -->
+    <section class="container py-5" id="blogs">
+        <h2 class="mb-4">Recent Blogs</h2>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col">
+                <div class="card card-hover h-100 p-3">
+                    <i class="fas fa-blog fa-2x text-blue-600 mb-2"></i>
+                    <h5>Understanding Phishing Tactics in 2025</h5>
+                    <p>Learn how modern attacks adapt and how you can defend.</p>
+                    <a href="#" class="stretched-link">Read more <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card card-hover h-100 p-3">
+                    <i class="fas fa-shield-alt fa-2x text-blue-600 mb-2"></i>
+                    <h5>Protecting Your Inbox</h5>
+                    <p>Best practices and AI tools to keep threats at bay.</p>
+                    <a href="#" class="stretched-link">Read more <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
+            <div class="col">
+                <div class="card card-hover h-100 p-3">
+                    <i class="fas fa-lightbulb fa-2x text-blue-600 mb-2"></i>
+                    <h5>Top 10 Email Security Practices</h5>
+                    <p>Key strategies every user should implement today.</p>
+                    <a href="#" class="stretched-link">Read more <i class="fas fa-arrow-right ms-1"></i></a>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Patterns and Trends Section -->
-    <section id="patterns" class="gradient-bg mt-6">
-        <h2>Phishing Patterns and Trends</h2>
-        <div class="p-4">
-            <p>Recent statistics show a 30% increase in phishing attacks targeting remote workers. Common tactics include:</p>
-            <div class="icon-bullet">
-                <i class="fas fa-shield-alt"></i>
-                <span>Impersonation of trusted brands</span>
-            </div>
-            <div class="icon-bullet">
-                <i class="fas fa-exclamation-circle"></i>
-                <span>Urgent requests for sensitive information</span>
-            </div>
-            <div class="icon-bullet">
-                <i class="fas fa-link"></i>
-                <span>Links to fake login pages</span>
+    <!-- Latest News -->
+    <section class="bg-light py-5" id="news">
+        <div class="container">
+            <h2 class="mb-4">Latest News</h2>
+            <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="col">
+                    <div class="card card-hover h-100 p-3 shadow-sm">
+                        <h6 class="fw-bold">Major Phishing Attack Targets Banks</h6>
+                        <p class="small text-muted">Apr 24, 2025</p>
+                        <p>Mass credential harvesting through sophisticated brand spoofing.</p>
+                        <a href="#" class="stretched-link text-primary">Learn more</a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card card-hover h-100 p-3 shadow-sm">
+                        <h6 class="fw-bold">AI Tools Combat Email Fraud</h6>
+                        <p class="small text-muted">Apr 20, 2025</p>
+                        <p>New ML models boost detection accuracy by 30% in trials.</p>
+                        <a href="#" class="stretched-link text-primary">Learn more</a>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card card-hover h-100 p-3 shadow-sm">
+                        <h6 class="fw-bold">Remote Workers at Risk</h6>
+                        <p class="small text-muted">Apr 18, 2025</p>
+                        <p>Phishing attempts surge by 200% targeting home offices.</p>
+                        <a href="#" class="stretched-link text-primary">Learn more</a>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- Trends -->
+    <section class="container py-5" id="patterns">
+        <h2 class="mb-4">Phishing Trends & Patterns</h2>
+        <div class="icon-bullet"><i class="fas fa-user-secret text-red-500"></i>Impersonation of trusted brands</div>
+        <div class="icon-bullet"><i class="fas fa-exclamation-triangle text-yellow-500"></i>Urgent action requests</div>
+        <div class="icon-bullet"><i class="fas fa-link text-blue-500"></i>Malicious link redirection</div>
+        <div class="icon-bullet"><i class="fas fa-key text-green-500"></i>Credential-harvesting pages</div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="bg-light py-5" id="faq">
+        <div class="container">
+            <h2 class="mb-4">Frequently Asked Questions</h2>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq1">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne">
+                            What is phishing?
+                        </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">Phishing is a social engineering attack where adversaries
+                            impersonate trusted entities...</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo">
+                            How can I protect myself?
+                        </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">Use strong passwords, enable 2FA, scrutinize senders, and use tools
+                            like InboxGuard...</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree">
+                            Does AI really help?
+                        </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">AI analyzes content patterns, urgency cues, and URL anomalies at
+                            scale...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dark Mode Script -->
+    <script>
+        const toggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        const saved = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', saved);
+        toggle.checked = saved === 'dark';
+        toggle.addEventListener('change', () => {
+            const mode = toggle.checked ? 'dark' : 'light';
+            html.setAttribute('data-theme', mode);
+            localStorage.setItem('theme', mode);
+        });
+    </script>
 </body>
 
 </html>
