@@ -5,40 +5,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* Enhanced styles for interactivity */
+        .interactive-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+
+        .interactive-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, var(--header-bg), var(--highlight));
+            color: var(--text-primary);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .gradient-bg h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .gradient-bg a {
+            text-decoration: none;
+            color: var(--highlight);
+            transition: color 0.3s ease;
+        }
+
+        .gradient-bg a:hover {
+            color: var(--btn-primary-hover);
+        }
+
+        .icon-bullet {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .icon-bullet i {
+            font-size: 1.2rem;
+            color: var(--highlight);
+            margin-right: 10px;
+        }
+
+        .icon-bullet span {
+            font-size: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .btn-primary {
+            background-color: var(--btn-primary-bg);
+            color: var(--text-primary);
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--btn-primary-hover);
+        }
+    </style>
 </head>
 
 <body>
     <h1>Resources</h1>
 
     <!-- Blogs Section -->
-    <section id="blogs">
+    <section id="blogs" class="gradient-bg">
         <h2>Recent Blogs</h2>
-        <ul>
-            <li><a href="https://example.com/blog1" target="_blank">Understanding Phishing Tactics in 2025</a></li>
-            <li><a href="https://example.com/blog2" target="_blank">How to Protect Your Inbox from Cyber Threats</a></li>
-            <li><a href="https://example.com/blog3" target="_blank">Top 10 Email Security Practices</a></li>
-        </ul>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="https://example.com/blog1" target="_blank" class="interactive-card">
+                <h3>Understanding Phishing Tactics in 2025</h3>
+                <p>Learn about the latest phishing tactics and how to stay safe.</p>
+            </a>
+            <a href="https://example.com/blog2" target="_blank" class="interactive-card">
+                <h3>How to Protect Your Inbox from Cyber Threats</h3>
+                <p>Discover effective strategies to secure your email.</p>
+            </a>
+            <a href="https://example.com/blog3" target="_blank" class="interactive-card">
+                <h3>Top 10 Email Security Practices</h3>
+                <p>Follow these best practices to enhance your email security.</p>
+            </a>
+        </div>
     </section>
 
     <!-- News Articles Section -->
-    <section id="news">
+    <section id="news" class="gradient-bg mt-6">
         <h2>Latest News</h2>
-        <ul>
-            <li><a href="https://example.com/news1" target="_blank">Major Phishing Attack Targets Financial Institutions</a></li>
-            <li><a href="https://example.com/news2" target="_blank">New AI Tools Combat Email Fraud</a></li>
-            <li><a href="https://example.com/news3" target="_blank">Cybersecurity Trends to Watch in 2025</a></li>
-        </ul>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <a href="https://example.com/news1" target="_blank" class="interactive-card">
+                <h3>Major Phishing Attack Targets Financial Institutions</h3>
+                <p>Read about the latest phishing attack and its impact.</p>
+            </a>
+            <a href="https://example.com/news2" target="_blank" class="interactive-card">
+                <h3>New AI Tools Combat Email Fraud</h3>
+                <p>Explore how AI is revolutionizing email security.</p>
+            </a>
+            <a href="https://example.com/news3" target="_blank" class="interactive-card">
+                <h3>Cybersecurity Trends to Watch in 2025</h3>
+                <p>Stay updated on the latest trends in cybersecurity.</p>
+            </a>
+        </div>
     </section>
 
     <!-- Patterns and Trends Section -->
-    <section id="patterns">
+    <section id="patterns" class="gradient-bg mt-6">
         <h2>Phishing Patterns and Trends</h2>
-        <p>Recent statistics show a 30% increase in phishing attacks targeting remote workers. Common tactics include:</p>
-        <ul>
-            <li>Impersonation of trusted brands</li>
-            <li>Urgent requests for sensitive information</li>
-            <li>Links to fake login pages</li>
-        </ul>
+        <div class="p-4">
+            <p>Recent statistics show a 30% increase in phishing attacks targeting remote workers. Common tactics include:</p>
+            <div class="icon-bullet">
+                <i class="fas fa-shield-alt"></i>
+                <span>Impersonation of trusted brands</span>
+            </div>
+            <div class="icon-bullet">
+                <i class="fas fa-exclamation-circle"></i>
+                <span>Urgent requests for sensitive information</span>
+            </div>
+            <div class="icon-bullet">
+                <i class="fas fa-link"></i>
+                <span>Links to fake login pages</span>
+            </div>
+        </div>
     </section>
 </body>
 
