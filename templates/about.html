@@ -1,0 +1,1161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | InboxGuard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <style>
+        /* Animation keyframes */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @keyframes gradientBg {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        @keyframes typing {
+            from {
+                width: 0
+            }
+
+            to {
+                width: 100%
+            }
+        }
+
+        @keyframes blink {
+            50% {
+                border-color: transparent
+            }
+        }
+
+        /* Custom animations */
+        .animate-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 3s ease-in-out infinite;
+        }
+
+        .gradient-bg {
+            background: linear-gradient(-45deg, #3b82f6, #2563eb, #1d4ed8, #1e40af);
+            background-size: 400% 400%;
+            animation: gradientBg 15s ease infinite;
+        }
+
+        .typing-effect {
+            overflow: hidden;
+            white-space: nowrap;
+            border-right: 3px solid var(--highlight);
+            width: 0;
+            animation:
+                typing 3.5s steps(40, end) 1s forwards,
+                blink 1s step-end infinite;
+        }
+
+        /* Interactive elements */
+        .feature-card {
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px) rotateX(5deg);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+
+        .feature-card:hover .card-icon {
+            transform: rotateY(180deg);
+        }
+
+        .card-icon {
+            transition: transform 0.6s ease;
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 50px;
+        }
+
+        .timeline-item:before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 2px;
+            background-color: var(--highlight);
+        }
+
+        .timeline-item:after {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 0;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background-color: var(--highlight);
+        }
+
+        .timeline-item:last-child:before {
+            height: 0;
+        }
+
+        .tech-pill {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            margin: 5px;
+            background-color: var(--info-bg);
+            color: var(--info-text);
+            transition: all 0.3s ease;
+        }
+
+        .tech-pill:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Parallax scrolling effect */
+        .parallax-section {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            z-index: -1;
+            transform: translateZ(-1px) scale(2);
+        }
+
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Security shield animation */
+        .security-shield {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            margin: 0 auto;
+        }
+
+        .shield-outer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, rgba(59, 130, 246, 0.6) 0%, rgba(37, 99, 235, 0) 70%);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .shield-inner {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: calc(100% - 40px);
+            height: calc(100% - 40px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--panel-bg);
+            border-radius: 50%;
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+        }
+
+        .shield-icon {
+            font-size: 4rem;
+            color: var(--highlight);
+        }
+
+        /* Floating email animation */
+        .floating-email-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        /* Remove global floating email animation as we're using individual ones */
+        .floating-email {
+            position: absolute;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            z-index: 5;
+        }
+
+        .floating-email:before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background-color: var(--highlight);
+            border-radius: 2px;
+        }
+
+        @keyframes float-email {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+
+            5% {
+                opacity: 1;
+            }
+
+            45% {
+                transform: translateY(-10px) translateX(20px);
+                opacity: 1;
+            }
+
+            50% {
+                transform: translateY(-10px) translateX(20px);
+                opacity: 1;
+            }
+
+            95% {
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(0) translateX(40px);
+                opacity: 0;
+            }
+        }
+
+        /* Threat indicator pulse */
+        .threat-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: threat-pulse 2s infinite;
+        }
+
+        .threat-low {
+            background-color: #10b981;
+            box-shadow: 0 0 0 rgba(16, 185, 129, 0.4);
+        }
+
+        .threat-medium {
+            background-color: #f59e0b;
+            box-shadow: 0 0 0 rgba(245, 158, 11, 0.4);
+        }
+
+        .threat-high {
+            background-color: #ef4444;
+            box-shadow: 0 0 0 rgba(239, 68, 68, 0.4);
+        }
+
+        @keyframes threat-pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 10px rgba(59, 130, 246, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0);
+            }
+        }
+
+        /* Code animation */
+        .code-block {
+            position: relative;
+            font-family: monospace;
+            background-color: var(--panel-header);
+            border-radius: 8px;
+            padding: 20px;
+            overflow: hidden;
+        }
+
+        .code-line {
+            display: block;
+            height: 1.5em;
+            margin: 8px 0;
+            width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            animation: code-type 2s steps(40, end) forwards;
+        }
+
+        .code-line:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .code-line:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        .code-line:nth-child(4) {
+            animation-delay: 1.5s;
+        }
+
+        .code-line:nth-child(5) {
+            animation-delay: 2s;
+        }
+
+        @keyframes code-type {
+            from {
+                width: 0;
+            }
+
+            to {
+                width: 100%;
+            }
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 10px;
+            height: 20px;
+            background-color: var(--highlight);
+            animation: cursor-blink 1s infinite;
+        }
+
+        @keyframes cursor-blink {
+
+            0%,
+            49% {
+                opacity: 1;
+            }
+
+            50%,
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body class="bg-gray-50 min-h-screen">
+    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm fixed-top">
+        <div class="container-fluid">
+            <div class="d-flex align-items-center">
+                <i class="fas fa-shield-alt text-4xl text-blue-600 me-3"></i>
+                <a class="navbar-brand fw-bold" href="/">InboxGuard</a>
+            </div>
+
+            <!-- Hamburger for mobile -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                <!-- Navigation links on the right -->
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about.html">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/resource.html">Resources</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/#working">Site Working</a>
+                    </li>
+                </ul>
+
+                <!-- Toggle after the navigation links -->
+                <div class="ms-3"> <!-- Added margin for spacing -->
+                    <div class="theme-switch-wrapper-inline">
+                        <label class="theme-switch mb-0" for="checkbox" style="cursor: pointer;">
+                            <input type="checkbox" id="checkbox" style="display: none;">
+                            <div class="slider d-flex align-items-center">
+                                <i class="fas fa-moon icon moon"></i>
+                                <i class="fas fa-sun icon sun ms-2"></i>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="gradient-bg text-white pt-24 pb-16">
+        <div class="container-fluid mx-auto aboutt">
+            <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between">
+                <!-- Left content (text) -->
+                <div class="text-left md:w-2/3 mb-8 md:mb-0">
+                    <h1 class="text-4xl md:text-5xl font-bold mb-6">Defending Your Inbox with AI</h1>
+                    <p class="text-xl opacity-90">
+                        InboxGuard is an advanced phishing detection tool that leverages the power of Google's Gemini AI
+                        to identify and neutralize sophisticated email threats.
+                    </p>
+                </div>
+                
+                <!-- Right content (shield icon) -->
+                <div class="md:w-1/3 flex justify-center">
+                    <div class="security-shield">
+                        <div class="shield-outer"></div>
+                        <div class="shield-inner">
+                            <i class="fas fa-shield-alt shield-icon"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Problem Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center gap-10">
+                <div class="md:w-1/2 reveal">
+                    <div class="floating-email-container">
+                        <!-- Dynamically inserted phishing emails floating around -->
+                    </div>
+                </div>
+                <div class="md:w-1/2 reveal">
+                    <h2 class="text-3xl font-bold mb-6">The Growing Phishing Threat</h2>
+                    <div class="border-l-4 border-red-500 pl-4 mb-6">
+                        <p class="text-xl italic text-gray-600">
+                            Phishing attempts have increased by 300% since the COVID-19 pandemic began.
+                        </p>
+                    </div>
+                    <p class="text-gray-700 mb-4">
+                        Today's phishing attacks are more sophisticated than ever before. Cybercriminals are using
+                        advanced tactics to bypass traditional security systems, including:
+                    </p>
+                    <ul class="space-y-3 mb-6">
+                        <li class="flex items-start">
+                            <div class="threat-indicator threat-low mt-1"></div>
+                            <span>Basic brand impersonation and spoofed sender addresses</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="threat-indicator threat-medium mt-1"></div>
+                            <span>Context-aware attacks that reference real information about the target</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="threat-indicator threat-high mt-1"></div>
+                            <span>AI-generated content that avoids traditional security flags</span>
+                        </li>
+                    </ul>
+                    <p class="text-gray-700">
+                        Even security-conscious users can fall victim to these advanced phishing attempts. InboxGuard
+                        was created to provide an additional layer of protection by analyzing content that traditional
+                        email security might miss.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Our Solution Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <h2 class="text-3xl font-bold mb-6">Our Solution: AI-Powered Phishing Detection</h2>
+                <p class="text-xl text-gray-600">
+                    InboxGuard combines traditional security techniques with cutting-edge artificial intelligence to
+                    provide comprehensive protection against phishing.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal">
+                <div class="feature-card p-6 bg-white rounded-xl shadow-lg border border-gray-100">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-6 card-icon">
+                        <i class="fas fa-brain text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Google Gemini AI Analysis</h3>
+                    <p class="text-gray-600 mb-4">
+                        Leverages Google's advanced Gemini AI to understand the content and context of emails,
+                        identifying subtle manipulation tactics and deception.
+                    </p>
+                    <div class="code-block mt-6">
+                        <div class="code-line"><span class="text-green-400">gemini.analyze</span>(<span
+                                class="text-yellow-300">"email_content"</span>);</div>
+                        <div class="code-line"><span class="text-blue-400">if</span> (phishing_indicators > threshold) {
+                        </div>
+                        <div class="code-line"> <span class="text-orange-400">alert</span>(<span
+                                class="text-yellow-300">"Potential threat detected!"</span>);</div>
+                        <div class="code-line">}</div>
+                        <div class="cursor"></div>
+                    </div>
+                </div>
+
+                <div class="feature-card p-6 bg-white rounded-xl shadow-lg border border-gray-100">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-6 card-icon">
+                        <i class="fas fa-link text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">URL Analysis & Sandboxing</h3>
+                    <p class="text-gray-600 mb-4">
+                        Extracts and analyzes URLs for malicious patterns, domain spoofing, and link manipulation.
+                        Provides safe preview of suspicious links in a sandbox environment.
+                    </p>
+                    <ul class="space-y-2 mt-4">
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>Detects misleading domains</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>Identifies URL shorteners</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>Flags suspicious TLDs</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-check-circle text-green-500 mr-2"></i>
+                            <span>Previews links safely</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="feature-card p-6 bg-white rounded-xl shadow-lg border border-gray-100">
+                    <div class="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-6 card-icon">
+                        <i class="fas fa-shield-alt text-2xl text-blue-600"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-4">Comprehensive Risk Assessment</h3>
+                    <p class="text-gray-600 mb-4">
+                        Provides detailed risk scoring with explanation of detected threats. Helps users understand why
+                        an email might be suspicious.
+                    </p>
+                    <div class="mt-4 space-y-3">
+                        <div class="w-full bg-gray-200 rounded-full h-4">
+                            <div class="bg-green-500 h-4 rounded-full" style="width: 25%"></div>
+                        </div>
+                        <div class="text-sm text-gray-600">Low Risk (25%)</div>
+
+                        <div class="w-full bg-gray-200 rounded-full h-4">
+                            <div class="bg-yellow-500 h-4 rounded-full" style="width: 55%"></div>
+                        </div>
+                        <div class="text-sm text-gray-600">Medium Risk (55%)</div>
+
+                        <div class="w-full bg-gray-200 rounded-full h-4">
+                            <div class="bg-red-500 h-4 rounded-full" style="width: 85%"></div>
+                        </div>
+                        <div class="text-sm text-gray-600">High Risk (85%)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+                <h2 class="text-3xl font-bold mb-6">How InboxGuard Works</h2>
+                <p class="text-xl text-gray-600">
+                    A behind-the-scenes look at our technology stack and architecture
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto reveal">
+                <div class="timeline-item px-6 md:px-10">
+                    <h3 class="text-xl font-semibold mb-3">1. Email Content Analysis</h3>
+                    <p class="text-gray-600 mb-4">
+                        When you paste an email into InboxGuard, we extract key components like sender information,
+                        subject, body content, and embedded links. This parsed content is then prepared for AI analysis.
+                    </p>
+                    <div class="flex flex-wrap">
+                        <span class="tech-pill"><i class="fas fa-code mr-1"></i> Python</span>
+                        <span class="tech-pill"><i class="fas fa-regular fa-envelope mr-1"></i> Email Parsing</span>
+                        <span class="tech-pill"><i class="fas fa-cogs mr-1"></i> Natural Language Processing</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item px-6 md:px-10">
+                    <h3 class="text-xl font-semibold mb-3">2. Google Gemini AI Processing</h3>
+                    <p class="text-gray-600 mb-4">
+                        The extracted email content is sent to Google's Gemini AI via API. Gemini analyzes the text for
+                        linguistics patterns, urgency indicators, threat language, and manipulation tactics common in
+                        phishing attempts.
+                    </p>
+                    <div class="flex flex-wrap">
+                        <span class="tech-pill"><i class="fas fa-brain mr-1"></i> Gemini AI</span>
+                        <span class="tech-pill"><i class="fas fa-cloud mr-1"></i> Google API</span>
+                        <span class="tech-pill"><i class="fas fa-robot mr-1"></i> Function Calling</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item px-6 md:px-10">
+                    <h3 class="text-xl font-semibold mb-3">3. URL Analysis & Extraction</h3>
+                    <p class="text-gray-600 mb-4">
+                        InboxGuard identifies all URLs in the email content and performs multiple checks for suspicious
+                        patterns. URLs are evaluated for domain spoofing, shorteners, suspicious TLDs, and other red
+                        flags.
+                    </p>
+                    <div class="flex flex-wrap">
+                        <span class="tech-pill"><i class="fas fa-link mr-1"></i> URL Parsing</span>
+                        <span class="tech-pill"><i class="fas fa-search mr-1"></i> Regex Pattern Matching</span>
+                        <span class="tech-pill"><i class="fas fa-globe mr-1"></i> Domain Analysis</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item px-6 md:px-10">
+                    <h3 class="text-xl font-semibold mb-3">4. Risk Scoring & Visualization</h3>
+                    <p class="text-gray-600 mb-4">
+                        Results from the AI analysis and URL checks are combined to generate a comprehensive risk
+                        assessment. The findings are presented with visual indicators, detailed explanations, and
+                        specific warning indicators.
+                    </p>
+                    <div class="flex flex-wrap">
+                        <span class="tech-pill"><i class="fas fa-chart-bar mr-1"></i> Risk Algorithm</span>
+                        <span class="tech-pill"><i class="fas fa-paint-brush mr-1"></i> UI Visualization</span>
+                        <span class="tech-pill"><i class="fas fa-file-alt mr-1"></i> Reporting</span>
+                    </div>
+                </div>
+
+                <div class="timeline-item px-6 md:px-10">
+                    <h3 class="text-xl font-semibold mb-3">5. Safe Link Preview</h3>
+                    <p class="text-gray-600 mb-4">
+                        InboxGuard provides a sandboxed environment to safely preview suspicious links without exposing
+                        your system to potential threats. This helps users verify the legitimacy of links before
+                        clicking.
+                    </p>
+                    <div class="flex flex-wrap">
+                        <span class="tech-pill"><i class="fas fa-box mr-1"></i> Sandbox Technology</span>
+                        <span class="tech-pill"><i class="fas fa-shield-alt mr-1"></i> Iframe Isolation</span>
+                        <span class="tech-pill"><i class="fas fa-eye mr-1"></i> Web Preview</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technical Details -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="max-w-5xl mx-auto reveal">
+                <h2 class="text-3xl font-bold mb-10 text-center">Technology Stack</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="p-6 bg-gray-50 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-server text-blue-600 mr-3"></i> Backend
+                        </h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i class="fab fa-python text-xl text-blue-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium">Python & Flask</h4>
+                                    <p class="text-sm text-gray-600">Core backend framework for API endpoints and
+                                        service orchestration</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-brain text-xl text-blue-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium">Google Gemini API</h4>
+                                    <p class="text-sm text-gray-600">Advanced AI model for natural language
+                                        understanding and content analysis</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-cogs text-xl text-blue-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium">RESTful Architecture</h4>
+                                    <p class="text-sm text-gray-600">Clean API design following RESTful principles for
+                                        scalability</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-search text-xl text-blue-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium">Regular Expressions</h4>
+                                    <p class="text-sm text-gray-600">Pattern matching for email parsing and URL
+                                        extraction</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="p-6 bg-gray-50 rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <i class="fas fa-laptop-code text-blue-600 mr-3"></i> Frontend
+                        </h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i class="fab fa-html5 text-xl text-blue-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium">HTML5 & CSS3</h4>
+                                    <p class="text-sm text-gray-600">Modern, responsive user interface with clean
+                                        semantic markup</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fab fa-js text-xl text-blue-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium">JavaScript (Vanilla)</h4>
+                                    <p class="text-sm text-gray-600">Interactive elements and asynchronous API calls</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fab fa-bootstrap text-xl text-blue-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium">Bootstrap & Tailwind CSS</h4>
+                                    <p class="text-sm text-gray-600">UI framework for responsive design with custom
+                                        styling</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-moon text-xl text-blue-500 mr-3 mt-1"></i>
+                                <div>
+                                    <h4 class="font-medium">Dark/Light Mode</h4>
+                                    <p class="text-sm text-gray-600">Theme toggle with persistent settings through local
+                                        storage</p>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="mt-12 p-6 bg-gray-50 rounded-xl shadow-md reveal">
+                    <h3 class="text-xl font-semibold mb-4 flex items-center">
+                        <i class="fas fa-shield-alt text-blue-600 mr-3"></i> Security Features
+                    </h3>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span>Sender address spoofing detection</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span>Suspicious link pattern recognition</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span>Manipulative language identification</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span>Urgency and threat tactics detection</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <ul class="space-y-3">
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span>Safe sandboxed link preview environment</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span>Domain reputation checks</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span>Sensitive information request detection</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <i class="fas fa-check-circle text-green-500 mr-2 mt-1"></i>
+                                    <span>Brand impersonation identification</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Future Development -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto reveal">
+                <h2 class="text-3xl font-bold mb-8 text-center">Future Development Roadmap</h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="p-5 bg-white rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-rocket text-blue-600"></i>
+                            </div>
+                            Near-Term Goals
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-angle-right text-blue-500 mr-2 mt-1"></i>
+                                <span>Browser extension for real-time analysis</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-angle-right text-blue-500 mr-2 mt-1"></i>
+                                <span>API endpoints for third-party integration</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-angle-right text-blue-500 mr-2 mt-1"></i>
+                                <span>Expanded threat database with more indicators</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-angle-right text-blue-500 mr-2 mt-1"></i>
+                                <span>Email attachment analysis</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="p-5 bg-white rounded-xl shadow-md">
+                        <h3 class="text-xl font-semibold mb-4 flex items-center">
+                            <div class="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-lightbulb text-blue-600"></i>
+                            </div>
+                            Long-Term Vision
+                        </h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-start">
+                                <i class="fas fa-angle-right text-blue-500 mr-2 mt-1"></i>
+                                <span>Email client plugin integration</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-angle-right text-blue-500 mr-2 mt-1"></i>
+                                <span>Advanced deep learning models for improved accuracy</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-angle-right text-blue-500 mr-2 mt-1"></i>
+                                <span>Enterprise solutions with custom training</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fas fa-angle-right text-blue-500 mr-2 mt-1"></i>
+                                <span>Real-time threat intelligence network</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="text-center mt-10">
+                    <p class="text-gray-600 italic">
+                        "Our vision is to make advanced AI-powered phishing protection accessible to everyone."
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+                <h2 class="text-3xl font-bold mb-6">The Team Behind InboxGuard</h2>
+                <p class="text-xl text-gray-600">
+                    Meet the developers who built this project
+                </p>
+            </div>
+
+            <div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 reveal">
+                <div
+                    class="bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="h-32 bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center">
+                        <i class="fas fa-user-circle text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-semibold mb-2">Team Member</h3>
+                        <p class="text-blue-600 mb-3">Project Lead & Developer</p>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Full-stack developer with a passion for cybersecurity and AI integration.
+                        </p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="https://github.com/Harshj143"
+                                class="text-gray-400 hover:text-blue-600 transition duration-300">
+                                <i class="fab fa-github text-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-blue-600 transition duration-300">
+                                <i class="fab fa-linkedin text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="h-32 bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center">
+                        <i class="fas fa-user-circle text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-semibold mb-2">Team Member</h3>
+                        <p class="text-blue-600 mb-3">Frontend Developer</p>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Specializes in creating intuitive, responsive user interfaces with modern web technologies.
+                        </p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-blue-600 transition duration-300">
+                                <i class="fab fa-github text-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-blue-600 transition duration-300">
+                                <i class="fab fa-linkedin text-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="bg-white rounded-xl shadow-md overflow-hidden transform transition duration-300 hover:-translate-y-2 hover:shadow-xl">
+                    <div class="h-32 bg-gradient-to-r from-blue-500 to-blue-700 flex items-center justify-center">
+                        <i class="fas fa-user-circle text-6xl text-white"></i>
+                    </div>
+                    <div class="p-6 text-center">
+                        <h3 class="text-xl font-semibold mb-2">Team Member</h3>
+                        <p class="text-blue-600 mb-3">AI Specialist</p>
+                        <p class="text-gray-600 text-sm mb-4">
+                            Focuses on machine learning implementation and AI integration for threat detection.
+                        </p>
+                        <div class="flex justify-center space-x-3">
+                            <a href="#" class="text-gray-400 hover:text-blue-600 transition duration-300">
+                                <i class="fab fa-github text-lg"></i>
+                            </a>
+                            <a href="#" class="text-gray-400 hover:text-blue-600 transition duration-300">
+                                <i class="fab fa-linkedin text-lg"></i>
+                            </a>
+                         
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Dark mode toggle
+            const toggleSwitch = document.querySelector('#checkbox');
+            const htmlEl = document.documentElement;
+
+            function showThemeNotification(message) {
+                if (!document.getElementById('theme-notification')) {
+                    const notification = document.createElement('div');
+                    notification.id = 'theme-notification';
+                    notification.style.cssText = `
+                        position: fixed;
+                        bottom: 20px;
+                        right: 20px;
+                        padding: 10px 20px;
+                        background-color: white;
+                        color: black;
+                        border: 1px solid #ccc;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                        font-size: 14px;
+                        opacity: 0;
+                        transform: translateY(20px);
+                        transition: opacity 0.3s ease, transform 0.3s ease;
+                        z-index: 1000;
+                    `;
+                    document.body.appendChild(notification);
+                }
+                const notification = document.getElementById('theme-notification');
+                notification.textContent = message;
+                notification.style.opacity = '1';
+                notification.style.transform = 'translateY(0)';
+                setTimeout(() => {
+                    notification.style.opacity = '0';
+                    notification.style.transform = 'translateY(20px)';
+                }, 2000);
+            }
+
+            if (!localStorage.getItem('theme')) {
+                localStorage.setItem('theme', 'dark');
+                htmlEl.setAttribute('data-theme', 'dark');
+                toggleSwitch.checked = true;
+            } else {
+                const savedTheme = localStorage.getItem('theme');
+                htmlEl.setAttribute('data-theme', savedTheme);
+                toggleSwitch.checked = savedTheme === 'dark';
+            }
+
+            toggleSwitch.addEventListener('change', function (e) {
+                if (e.target.checked) {
+                    htmlEl.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                    showThemeNotification('Dark mode enabled');
+                } else {
+                    htmlEl.setAttribute('data-theme', 'light');
+                    localStorage.setItem('theme', 'light');
+                    showThemeNotification('Light mode enabled');
+                }
+            });
+
+            // Animate reveal elements when scrolling
+            const revealElements = document.querySelectorAll('.reveal');
+
+            function checkReveal() {
+                const windowHeight = window.innerHeight;
+                const revealPoint = 150;
+
+                revealElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    if (elementTop < windowHeight - revealPoint) {
+                        element.classList.add('active');
+                    }
+                });
+            }
+
+            window.addEventListener('scroll', checkReveal);
+            window.addEventListener('resize', checkReveal);
+            window.addEventListener('load', checkReveal);
+
+            // Simulate phishing emails floating animation
+            const floatingEmailContainer = document.querySelector('.floating-email-container');
+            if (floatingEmailContainer) {
+                // All phishing examples
+                const phishingPhrases = [
+                    "Urgent: Your account has been compromised",
+                    "Security Alert: Verify your information",
+                    "Your package delivery failed",
+                    "Password reset required immediately",
+                    "Your account will be suspended in 24 hours",
+                    "Important Notice: Confirm your billing details",
+                    "Unauthorized login attempt detected",
+                    "Update your payment information to avoid service interruption",
+                    "You've won a prize! Claim now",
+                    "Suspicious activity detected on your account",
+                    "Final Warning: Account deactivation pending",
+                    "Payment declined: Please update your card",
+                    "Your subscription will be canceled today",
+                    "Tax refund pending: Submit your information",
+                    "Delivery on hold: Address confirmation needed",
+                    "Unusual activity detected: Secure your account",
+                    "Your bank account access is restricted",
+                    "Immediate action required: Confirm your identity",
+                    "Free gift card waiting for you",
+                    "Reset your password to regain access"
+                ];
+
+                const phishingIcons = [
+                    "fa-exclamation-circle",
+                    "fa-lock",
+                    "fa-box",
+                    "fa-key",
+                    "fa-ban"
+                ];
+
+                // Clear any existing emails in container
+                floatingEmailContainer.innerHTML = '';
+
+                // Create first set of 3 emails
+                showEmailSet(0);
+
+                // Function to display a set of 3 emails
+                function showEmailSet(startIndex) {
+                    // Clear container first
+                    floatingEmailContainer.innerHTML = '';
+
+                    // Show 3 emails starting from startIndex (wrapping around if needed)
+                    for (let i = 0; i < 3; i++) {
+                        const index = (startIndex + i) % phishingPhrases.length;
+
+                        const emailElement = document.createElement('div');
+                        emailElement.classList.add('floating-email');
+                        emailElement.innerHTML = `<i class="fas ${phishingIcons[index]} mr-2"></i> ${phishingPhrases[index]}`;
+
+                        // Create varied but readable positioning
+                        // Position emails in top, middle, and bottom areas but with some randomness
+                        const verticalPosition = 15 + (i * 30) + (Math.random() * 10 - 5);
+                        const horizontalPosition = 10 + (Math.random() * 20);
+
+                        emailElement.style.cssText = `
+                            position: absolute;
+                            left: ${horizontalPosition}%;
+                            top: ${verticalPosition}%;
+                            opacity: 0;
+                            color: var(--text-primary);
+                            background-color: var(--panel-bg);
+                            padding: 10px 15px;
+                            border-radius: 8px;
+                            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+                            max-width: 80%;
+                            white-space: nowrap;
+                            font-weight: 500;
+                            z-index: ${5 + i};
+                            animation: emailAppear 7s ease-in-out forwards;
+                            animation-delay: ${i * 0.5}s;
+                        `;
+
+                        floatingEmailContainer.appendChild(emailElement);
+                    }
+
+                    // Schedule next set after 8 seconds (giving time for the current set to animate)
+                    setTimeout(() => {
+                        showEmailSet((startIndex + 3) % phishingPhrases.length);
+                    }, 3200);
+                }
+
+                // Create animation for email appearance/disappearance
+                const styleSheet = document.createElement('style');
+                styleSheet.textContent = `
+                    @keyframes emailAppear {
+                        0% { opacity: 0; transform: translateY(-10px); }
+                        10% { opacity: 1; transform: translateY(0); }
+                        80% { opacity: 1; transform: translateY(0) translateX(10px); }
+                        100% { opacity: 0; transform: translateX(20px); }
+                    }
+                `;
+                document.head.appendChild(styleSheet);
+            }
+
+        });
+    </script>
+</body>
+
+</html>

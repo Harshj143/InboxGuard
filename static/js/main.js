@@ -151,24 +151,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 throw new Error(`Server responded with status: ${response.status}`);
             }
 
-            const result = await response.json();
-            
-            if (result.error) {
-                alert(`Error: ${result.error}`);
-                loadingIndicator.classList.add('hidden');
-                resultsPlaceholder.classList.remove('hidden');
-                return;
-            }
-
-            // Display results directly in the analysis panel
-            displayResults(result);
-        } catch (error) {
-            console.error('Error during analysis:', error);
-            alert(`Error: ${error.message}`);
+        const result = await response.json();
+        
+        if (result.error) {
+            alert(`Error: ${result.error}`);
             loadingIndicator.classList.add('hidden');
             resultsPlaceholder.classList.remove('hidden');
+            return;
         }
-    });
+
+        // Show the report in a popup
+        showReportPopup(result);
+    } catch (error) {
+        console.error('Error during analysis:', error);
+        alert(`Error: ${error.message}`);
+        loadingIndicator.classList.add('hidden');
+        resultsPlaceholder.classList.remove('hidden');
+    }
+});
 
     function displayResults(result) {
         // Hide loading indicator
