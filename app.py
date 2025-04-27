@@ -362,13 +362,11 @@ def preview_link():
 def report():
     email_id = request.args.get('email_id')
     if not email_id or email_id not in analysis_results:
-        return "<h1>Error: Invalid or missing email ID</h1>", 400
+        return jsonify({'error': 'Invalid or missing email ID'}), 400
 
-    # Fetch the analysis result using the email_id
+    # Return the analysis result as JSON
     result = analysis_results[email_id]
-
-    # Render the result in a simple HTML page
-    return render_template('report.html', result=result)
+    return jsonify(result)
 
 if __name__ == '__main__':
     app.run(debug=True)

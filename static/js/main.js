@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Show the report in a popup
-        showReportPopup(result);
+        displayResults(result)
     } catch (error) {
         console.error('Error during analysis:', error);
         alert(`Error: ${error.message}`);
@@ -386,6 +386,47 @@ window.addEventListener('DOMContentLoaded', async () => {
             displayResults(reportData);
         } catch (error) {
             console.error('Error fetching the report:', error);
+            alert('Failed to load the report. Please try again.');
+        }
+    }
+});
+
+// Handle report modal
+window.addEventListener('message', async (event) => {
+    // Check if this is a show report message from our extension
+    if (event.data && event.data.type === 'SHOW_REPORT' && event.data.emailId) {
+        try {
+            const response = await fetch(`/report?email_id=${event.data.emailId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch report');
+            }
+            const result = await response.json();
+            
+            // Show the report modal
+            const reportModal = document.getElementById('reportModal');
+            const reportContent = document.getElementById('reportContent');
+            const closeReportModal = document.getElementById('closeReportModal');
+            
+            // Populate the modal with the report data
+            reportContent.innerHTML = `
+                <h3 class="text-lg font-semibold mb-4">Analysis Report</h3>
+                <pre class="bg-gray-100 p-4 rounded-lg">${JSON.stringify(result, null, 2)}</pre>
+            `;
+            reportModal.classList.remove('hidden');
+            
+            // Handle close button
+            closeReportModal.onclick = () => {
+                reportModal.classList.add('hidden');
+            };
+            
+            // Close on click outside
+            reportModal.onclick = (e) => {
+                if (e.target === reportModal) {
+                    reportModal.classList.add('hidden');
+                }
+            };
+        } catch (error) {
+            console.error('Error fetching report:', error);
             alert('Failed to load the report. Please try again.');
         }
     }

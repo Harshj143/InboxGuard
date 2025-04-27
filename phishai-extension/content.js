@@ -500,8 +500,15 @@ function displayResults(data, container) {
   const detailsButton = document.getElementById('inboxguard-details-btn');
   if (detailsButton) {
     detailsButton.addEventListener('click', () => {
-      const reportUrl = `http://127.0.0.1:5000/?email_id=${data.email_id}`;
-      window.open(reportUrl, '_blank');
+      // Instead of opening in new tab, send message to main window
+      const mainWindow = window.open('http://127.0.0.1:5000/', '_blank');
+      // Wait for window to load
+      setTimeout(() => {
+        mainWindow.postMessage({
+          type: 'SHOW_REPORT',
+          emailId: data.email_id // Add the email_id here
+        }, '*');
+      }, 1000);
     });
   }
 }
