@@ -1,214 +1,4 @@
-/* Custom styles for InboxGuard Detector with Gemini */
-
-/* Animations */
-.animate-pulse-slow {
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
-@keyframes pulse {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: .5;
-    }
-}
-
-.transition-all {
-    transition: all 0.3s ease;
-}
-
-/* Custom focus styles */
-.focus-custom:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
-}
-
-/* Custom scrollbar for textarea */
-textarea::-webkit-scrollbar {
-    width: 8px;
-}
-
-textarea::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 4px;
-}
-
-textarea::-webkit-scrollbar-thumb {
-    background: #d1d1f8;
-    border-radius: 4px;
-}
-
-textarea::-webkit-scrollbar-thumb:hover {
-    background: #a4a7f7;
-}
-
-/* Risk level colors */
-.risk-low {
-    background-color: rgba(52, 211, 153, 0.1);
-    border-color: rgba(52, 211, 153, 0.3);
-    color: rgba(6, 95, 70, 1);
-}
-
-.risk-medium {
-    background-color: rgba(251, 191, 36, 0.1);
-    border-color: rgba(251, 191, 36, 0.3);
-    color: rgba(120, 53, 15, 1);
-}
-
-.risk-high {
-    background-color: rgba(249, 115, 22, 0.1);
-    border-color: rgba(249, 115, 22, 0.3);
-    color: rgba(154, 52, 18, 1);
-}
-
-.risk-critical {
-    background-color: rgba(239, 68, 68, 0.1);
-    border-color: rgba(239, 68, 68, 0.3);
-    color: rgba(153, 27, 27, 1);
-}
-
-/* Button hover effects */
-.button-hover-effect:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-}
-
-/* Custom spinner for loading */
-.custom-spinner {
-    border: 4px solid rgba(79, 70, 229, 0.2);
-    border-top: 4px solid rgba(79, 70, 229, 1);
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 1s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-/* Card hover effects */
-.card-hover:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-}
-
-/* Example button active state */
-.example-btn.active {
-    background-color: rgba(79, 70, 229, 0.2);
-    border-color: rgba(79, 70, 229, 0.5);
-}
-
-/* Custom tooltip styles */
-.tooltip {
-    position: relative;
-    display: inline-block;
-}
-
-.tooltip .tooltip-text {
-    visibility: hidden;
-    width: 120px;
-    background-color: rgba(17, 24, 39, 0.9);
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px;
-    position: absolute;
-    z-index: 1;
-    bottom: 125%;
-    left: 50%;
-    margin-left: -60px;
-    opacity: 0;
-    transition: opacity 0.3s;
-}
-
-.tooltip:hover .tooltip-text {
-    visibility: visible;
-    opacity: 1;
-}
-
-/* Gemini branded elements */
-.bg-gemini-gradient {
-    background: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 100%);
-}
-
-.text-gemini {
-    color: #4f46e5;
-}
-
-.border-gemini {
-    border-color: #4f46e5;
-}
-
-/* Mobile optimizations */
-@media (max-width: 640px) {
-    .hide-on-mobile {
-        display: none;
-    }
-    
-    .mobile-full-width {
-        width: 100%;
-    }
-    
-    .mobile-padding {
-        padding: 1rem;
-    }
-}
-/* Layout management for panels */
-#panels-container {
-    display: flex;
-    flex-direction: row;
-    gap: 20px;
-    transition: all 0.5s ease-in-out;
-}
-
-/* Single view - email panel centered */
-#panels-container.single-view #email-panel {
-    width: 70%;
-    margin: 0 auto;
-    transition: all 0.5s ease-in-out;
-}
-
-/* Dual view - panels side by side */
-#panels-container.dual-view #email-panel,
-#panels-container.dual-view #analysis-panel {
-    width: calc(50% - 10px);
-    transition: all 0.5s ease-in-out;
-}
-
-/* Hide analysis panel when not active */
-#panels-container.single-view #analysis-panel {
-    display: none;
-}
-
-/* Animation for Analysis Results panel */
-#analysis-panel {
-    opacity: 0;
-    transform: scale(0.8);
-    transition: all 0.5s ease-in-out;
-}
-
-#analysis-panel.active {
-    opacity: 1;
-    transform: scale(1);
-}
-
-/* Responsive adjustments */
-@media (max-width: 1024px) {
-    #panels-container {
-        flex-direction: column;
-    }
-    
-    #panels-container.single-view #email-panel,
-    #panels-container.dual-view #email-panel,
-    #panels-container.dual-view #analysis-panel {
-        width: 100%;
-        margin: 0;
-    }
-}
-/* Dark mode variables - enhanced color palette */
+/* ==================== BASIC VARIABLES AND THEME CONFIGURATION ==================== */
 :root {
     /* Dark Theme (Default) */
     --text-primary: #f3f4f6;
@@ -219,7 +9,6 @@ textarea::-webkit-scrollbar-thumb:hover {
     --panel-bg: #1f2937;
     --panel-header: #2a3649;
     --panel-border: #374151;
-    /* --input-bg: #111827; */
     --input-bg: #37415178;
     --input-border: #374151;
     --input-focus: #3b82f6;
@@ -243,7 +32,7 @@ textarea::-webkit-scrollbar-thumb:hover {
     --info-text: #3b82f6;
 }
 
-/* Light mode variables - enhanced color palette */
+/* Light mode variables */
 [data-theme="light"] {
     --text-primary: #1f2937;
     --text-secondary: #4b5563;
@@ -276,7 +65,7 @@ textarea::-webkit-scrollbar-thumb:hover {
     --info-text: #2563eb;
 }
 
-/* Apply theme colors to elements */
+/* ==================== GLOBAL STYLES AND BASE THEME APPLICATION ==================== */
 body {
     background-color: var(--bg-primary);
     color: var(--text-primary);
@@ -317,6 +106,41 @@ body {
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2) !important;
 }
 
+/* ==================== ANIMATIONS ==================== */
+.animate-pulse-slow {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: .5;
+    }
+}
+
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+/* Custom spinner for loading */
+.custom-spinner {
+    border: 4px solid rgba(79, 70, 229, 0.2);
+    border-top: 4px solid rgba(79, 70, 229, 1);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* ==================== FORM ELEMENTS ==================== */
+/* Inputs, Textareas, and Focus States */
 textarea,
 input {
     background-color: var(--input-bg) !important;
@@ -330,89 +154,212 @@ input:focus {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3) !important;
 }
 
-.bg-blue-600,
-.bg-blue-600:hover {
-    background-color: var(--header-bg) !important;
+.focus-custom:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.5);
 }
 
-.bg-blue-50 {
-    background-color: var(--info-bg) !important;
-    border-color: var(--info-border) !important;
+/* Custom scrollbar for textarea */
+textarea::-webkit-scrollbar {
+    width: 8px;
 }
 
-.text-blue-600,
-.text-blue-700 {
-    color: var(--info-text) !important;
+textarea::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
 }
 
-/* Risk level colors in dark mode */
-[data-theme="dark"] .bg-green-50 {
-    background-color: var(--success-bg) !important;
-    border-color: var(--success-border) !important;
+textarea::-webkit-scrollbar-thumb {
+    background: #d1d1f8;
+    border-radius: 4px;
 }
 
-[data-theme="dark"] .bg-yellow-50 {
-    background-color: var(--warning-bg) !important;
-    border-color: var(--warning-border) !important;
+textarea::-webkit-scrollbar-thumb:hover {
+    background: #a4a7f7;
 }
 
-[data-theme="dark"] .bg-orange-50 {
-    background-color: var(--warning-bg) !important;
-    border-color: var(--warning-border) !important;
+/* ==================== BUTTONS AND INTERACTIVE ELEMENTS ==================== */
+/* Button hover effects */
+.button-hover-effect:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
-[data-theme="dark"] .bg-red-50 {
-    background-color: var(--danger-bg) !important;
-    border-color: var(--danger-border) !important;
+/* Card hover effects */
+.card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-[data-theme="dark"] .text-green-500,
-[data-theme="dark"] .text-green-600,
-[data-theme="dark"] .text-green-700,
-[data-theme="dark"] .text-green-800 {
-    color: var(--success-text) !important;
+/* Example button active state */
+.example-btn.active {
+    background-color: rgba(79, 70, 229, 0.2);
+    border-color: rgba(79, 70, 229, 0.5);
 }
 
-[data-theme="dark"] .text-yellow-500,
-[data-theme="dark"] .text-yellow-600,
-[data-theme="dark"] .text-yellow-700,
-[data-theme="dark"] .text-yellow-800 {
-    color: var(--warning-text) !important;
-}
-
-[data-theme="dark"] .text-orange-500,
-[data-theme="dark"] .text-orange-600,
-[data-theme="dark"] .text-orange-700,
-[data-theme="dark"] .text-orange-800 {
-    color: var(--warning-text) !important;
-}
-
-[data-theme="dark"] .text-red-500,
-[data-theme="dark"] .text-red-600,
-[data-theme="dark"] .text-red-700,
-[data-theme="dark"] .text-red-800 {
-    color: var(--danger-text) !important;
-}
+/* Clear button styles */
 #clearBtn {
-background-color: #e5e7eb; /* bg-gray-200 */
-color: #374151; /* text-gray-700 */
+    background-color: #e5e7eb; /* bg-gray-200 */
+    color: #374151; /* text-gray-700 */
 }
 
 #clearBtn:hover {
-background-color: #d1d5db; 
+    background-color: #d1d5db; 
 }
 
 /* Dark mode button style */
 [data-theme="dark"] #clearBtn {
-background-color: #9ca3af; 
-color: #f3f4f6;
+    background-color: #9ca3af; 
+    color: #f3f4f6;
 }
 
 [data-theme="dark"] #clearBtn:hover {
-background-color: #6b7280; 
+    background-color: #6b7280; 
 }
 
-/* Improved theme toggle styles */
+/* Action buttons hover effects */
+.action-bar button {
+    transition: all 0.2s ease;
+}
+
+.action-bar button:hover {
+    transform: translateY(-1px);
+}
+
+/* ==================== RISK LEVEL INDICATORS ==================== */
+/* Risk level colors */
+.risk-low {
+    background-color: rgba(52, 211, 153, 0.1);
+    border-color: rgba(52, 211, 153, 0.3);
+    color: rgba(6, 95, 70, 1);
+}
+
+.risk-medium {
+    background-color: rgba(251, 191, 36, 0.1);
+    border-color: rgba(251, 191, 36, 0.3);
+    color: rgba(120, 53, 15, 1);
+}
+
+.risk-high {
+    background-color: rgba(249, 115, 22, 0.1);
+    border-color: rgba(249, 115, 22, 0.3);
+    color: rgba(154, 52, 18, 1);
+}
+
+.risk-critical {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-color: rgba(239, 68, 68, 0.3);
+    color: rgba(153, 27, 27, 1);
+}
+
+/* Risk indicator cards */
+.risk-card.critical {
+    background-color: #DC2626;
+}
+.risk-card.high {
+    background-color: #F59E0B;
+}
+.risk-card.medium {
+    background-color: #3B82F6;
+}
+.risk-card.low {
+    background-color: #10B981;
+}
+
+.risk-indicator.critical {
+    background-color: #DC2626;
+}
+
+.risk-indicator.high {
+    background-color: #F59E0B;
+}
+
+.risk-indicator.medium {
+    background-color: #3B82F6;
+}
+
+.risk-indicator.low {
+    background-color: #10B981;
+}
+
+.risk-level-badge {
+    font-size: 1.1rem;
+}
+
+/* ==================== THREAT INDICATORS AND ANALYSIS ELEMENTS ==================== */
+/* Threat indicators */
+.threat-indicator-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 80px;
+}
+
+.threat-indicator-card:hover {
+    transform: translateY(-2px);
+}
+
+.confidence-badge {
+    background-color: rgba(243, 244, 246, 0.8);
+    border: 1px solid #E5E7EB;
+}
+
+[data-theme="dark"] .confidence-badge {
+    background-color: rgba(31, 41, 55, 0.8);
+    border-color: #374151;
+}
+
+.threat-summary {
+    border-color: rgba(239, 68, 68, 0.3);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+[data-theme="dark"] .threat-summary {
+    border-color: rgba(239, 68, 68, 0.3);
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* ==================== PANEL LAYOUT AND TRANSITIONS ==================== */
+/* Layout management for panels */
+#panels-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Single view - email panel centered */
+#panels-container.single-view #email-panel {
+    width: 70%;
+    margin: 0 auto;
+    transition: all 0.5s ease-in-out;
+}
+
+/* Dual view - panels side by side */
+#panels-container.dual-view #email-panel,
+#panels-container.dual-view #analysis-panel {
+    width: calc(50% - 10px);
+    transition: all 0.5s ease-in-out;
+}
+
+/* Hide analysis panel when not active */
+#panels-container.single-view #analysis-panel {
+    display: none;
+}
+
+/* Animation for Analysis Results panel */
+#analysis-panel {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.5s ease-in-out;
+}
+
+#analysis-panel.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* ==================== DARK MODE / LIGHT MODE TOGGLE ==================== */
+/* Theme switch toggle styles */
 .theme-switch-wrapper {
     position: absolute;
     top: 20px;
@@ -420,6 +367,13 @@ background-color: #6b7280;
     display: flex;
     align-items: center;
     z-index: 100;
+}
+
+.theme-switch-wrapper-inline {
+    position: relative;
+    display: flex;
+    align-items: center;
+    z-index: 1;
 }
 
 .theme-switch {
@@ -446,6 +400,10 @@ background-color: #6b7280;
     transition: .4s;
     border-radius: 30px;
     border: 2px solid #4b5563;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
 }
 
 .slider:before {
@@ -510,36 +468,36 @@ input:checked+.slider {
 input:checked+.slider:hover {
     box-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
 }
-.theme-switch-wrapper-inline {
+
+/* ==================== CUSTOM TOOLTIP STYLES ==================== */
+.tooltip {
     position: relative;
-    display: flex;
-    align-items: center;
+    display: inline-block;
+}
+
+.tooltip .tooltip-text {
+    visibility: hidden;
+    width: 120px;
+    background-color: rgba(17, 24, 39, 0.9);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
     z-index: 1;
-  }
-
-.aboutt{  
-    display: flex;
-}
-/* Dark mode styles */
-html[data-theme='dark'] {
-    /* General dark mode variables */
-    --bg-color: #121212;
-    --text-color: #e4e4e4;
-    --border-color: #2a2a2a;
-    --panel-bg: #1e1e1e;
-    --panel-header: #2c2c2c;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+    opacity: 0;
+    transition: opacity 0.3s;
 }
 
-html[data-theme='light'] {
-    /* General light mode variables */
-    --bg-color: #f3f4f6;
-    --text-color: #1f2937;
-    --border-color: #e5e7eb;
-    --panel-bg: #ffffff;
-    --panel-header: #f9fafb;
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
 }
 
-/* Navbar Dark Mode Styles */
+/* ==================== NAVBAR DARK MODE STYLES ==================== */
 html[data-theme='dark'] .navbar {
     background-color: #1a1a1a !important;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
@@ -562,157 +520,62 @@ html[data-theme='dark'] .navbar-toggler-icon {
     filter: invert(0.8);
 }
 
-/* Body dark mode adjustments */
-html[data-theme='dark'] body {
-    background-color: var(--bg-color);
-    color: var(--text-color);
+/* ==================== BRANDING AND ACCENT STYLES ==================== */
+/* Gemini branded elements */
+.bg-gemini-gradient {
+    background: linear-gradient(135deg, #4f46e5 0%, #8b5cf6 100%);
 }
 
-/* Dark mode for panels and components */
-html[data-theme='dark'] .bg-white {
-    background-color: var(--panel-bg) !important;
+.text-gemini {
+    color: #4f46e5;
 }
 
-html[data-theme='dark'] .bg-gray-100 {
-    background-color: var(--panel-header) !important;
+.border-gemini {
+    border-color: #4f46e5;
 }
 
-html[data-theme='dark'] .border {
-    border-color: var(--border-color) !important;
+/* Blue accent colors */
+.bg-blue-600,
+.bg-blue-600:hover {
+    background-color: var(--header-bg) !important;
 }
 
-html[data-theme='dark'] .text-gray-800,
-html[data-theme='dark'] .text-gray-700 {
-    color: #e4e4e4 !important;
+.bg-blue-50 {
+    background-color: var(--info-bg) !important;
+    border-color: var(--info-border) !important;
 }
 
-html[data-theme='dark'] .text-gray-600 {
-    color: #b0b0b0 !important;
+.text-blue-600,
+.text-blue-700 {
+    color: var(--info-text) !important;
 }
 
-/* Dark mode for inputs and textareas */
-html[data-theme='dark'] input,
-html[data-theme='dark'] textarea {
-    background-color: #2d2d2d !important;
-    color: #e4e4e4 !important;
-    border-color: #444 !important;
+/* ==================== RESPONSIVE DESIGN ==================== */
+/* Mobile optimizations */
+@media (max-width: 640px) {
+    .hide-on-mobile {
+        display: none;
+    }
+    
+    .mobile-full-width {
+        width: 100%;
+    }
+    
+    .mobile-padding {
+        padding: 1rem;
+    }
 }
 
-/* Theme switch styling */
-.theme-switch-wrapper-inline {
-    display: flex;
-    align-items: center;
-}
-
-.theme-switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 26px;
-}
-
-.slider {
-    background-color: #ccc;
-    border-radius: 34px;
-    position: relative;
-    cursor: pointer;
-    height: 26px;
-    width: 60px;
-    transition: .4s;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 5px;
-}
-
-html[data-theme='dark'] .slider {
-    background-color: #3b82f6;
-}
-
-.moon,
-.sun {
-    font-size: 14px;
-}
-
-html[data-theme='dark'] .moon {
-    color: white;
-}
-
-html[data-theme='light'] .sun {
-    color: #ff9900;
-}
-.risk-card.critical {
-    background-color: #DC2626;
-}
-.risk-card.high {
-    background-color: #F59E0B;
-}
-.risk-card.medium {
-    background-color: #3B82F6;
-}
-.risk-card.low {
-    background-color: #10B981;
-}
-
-/* Hover effects for indicator cards */
-.threat-indicator-card {
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-.threat-indicator-card:hover {
-    transform: translateY(-2px);
-}
-.risk-level-badge {
-    font-size: 1.1rem;
-}
-
-.risk-indicator.critical {
-    background-color: #DC2626;
-}
-
-.risk-indicator.high {
-    background-color: #F59E0B;
-}
-
-.risk-indicator.medium {
-    background-color: #3B82F6;
-}
-
-.risk-indicator.low {
-    background-color: #10B981;
-}
-
-.confidence-badge {
-    background-color: rgba(243, 244, 246, 0.8);
-    border: 1px solid #E5E7EB;
-}
-
-/* Dark mode adjustments */
-[data-theme="dark"] .confidence-badge {
-    background-color: rgba(31, 41, 55, 0.8);
-    border-color: #374151;
-}
-
-.threat-summary {
-    border-color: rgba(239, 68, 68, 0.3);
-    background-color: rgba(239, 68, 68, 0.1);
-}
-
-[data-theme="dark"] .threat-summary {
-    border-color: rgba(239, 68, 68, 0.3);
-    background-color: rgba(239, 68, 68, 0.05);
-}
-
-/* More compact indicator cards */
-.threat-indicator-card {
-    min-height: 80px;
-}
-
-/* Improved action buttons */
-.action-bar button {
-    transition: all 0.2s ease;
-}
-
-.action-bar button:hover {
-    transform: translateY(-1px);
+/* Responsive panel adjustments */
+@media (max-width: 1024px) {
+    #panels-container {
+        flex-direction: column;
+    }
+    
+    #panels-container.single-view #email-panel,
+    #panels-container.dual-view #email-panel,
+    #panels-container.dual-view #analysis-panel {
+        width: 100%;
+        margin: 0;
+    }
 }
