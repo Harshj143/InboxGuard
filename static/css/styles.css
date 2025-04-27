@@ -510,3 +510,209 @@ input:checked+.slider {
 input:checked+.slider:hover {
     box-shadow: 0 0 8px rgba(59, 130, 246, 0.8);
 }
+.theme-switch-wrapper-inline {
+    position: relative;
+    display: flex;
+    align-items: center;
+    z-index: 1;
+  }
+
+.aboutt{  
+    display: flex;
+}
+/* Dark mode styles */
+html[data-theme='dark'] {
+    /* General dark mode variables */
+    --bg-color: #121212;
+    --text-color: #e4e4e4;
+    --border-color: #2a2a2a;
+    --panel-bg: #1e1e1e;
+    --panel-header: #2c2c2c;
+}
+
+html[data-theme='light'] {
+    /* General light mode variables */
+    --bg-color: #f3f4f6;
+    --text-color: #1f2937;
+    --border-color: #e5e7eb;
+    --panel-bg: #ffffff;
+    --panel-header: #f9fafb;
+}
+
+/* Navbar Dark Mode Styles */
+html[data-theme='dark'] .navbar {
+    background-color: #1a1a1a !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3) !important;
+}
+
+html[data-theme='dark'] .navbar-brand,
+html[data-theme='dark'] .nav-link {
+    color: #e4e4e4 !important;
+}
+
+html[data-theme='dark'] .nav-link:hover {
+    color: #3b82f6 !important;
+}
+
+html[data-theme='dark'] .navbar-toggler {
+    border-color: #333 !important;
+}
+
+html[data-theme='dark'] .navbar-toggler-icon {
+    filter: invert(0.8);
+}
+
+/* Body dark mode adjustments */
+html[data-theme='dark'] body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+/* Dark mode for panels and components */
+html[data-theme='dark'] .bg-white {
+    background-color: var(--panel-bg) !important;
+}
+
+html[data-theme='dark'] .bg-gray-100 {
+    background-color: var(--panel-header) !important;
+}
+
+html[data-theme='dark'] .border {
+    border-color: var(--border-color) !important;
+}
+
+html[data-theme='dark'] .text-gray-800,
+html[data-theme='dark'] .text-gray-700 {
+    color: #e4e4e4 !important;
+}
+
+html[data-theme='dark'] .text-gray-600 {
+    color: #b0b0b0 !important;
+}
+
+/* Dark mode for inputs and textareas */
+html[data-theme='dark'] input,
+html[data-theme='dark'] textarea {
+    background-color: #2d2d2d !important;
+    color: #e4e4e4 !important;
+    border-color: #444 !important;
+}
+
+/* Theme switch styling */
+.theme-switch-wrapper-inline {
+    display: flex;
+    align-items: center;
+}
+
+.theme-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 26px;
+}
+
+.slider {
+    background-color: #ccc;
+    border-radius: 34px;
+    position: relative;
+    cursor: pointer;
+    height: 26px;
+    width: 60px;
+    transition: .4s;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5px;
+}
+
+html[data-theme='dark'] .slider {
+    background-color: #3b82f6;
+}
+
+.moon,
+.sun {
+    font-size: 14px;
+}
+
+html[data-theme='dark'] .moon {
+    color: white;
+}
+
+html[data-theme='light'] .sun {
+    color: #ff9900;
+}
+.risk-card.critical {
+    background-color: #DC2626;
+}
+.risk-card.high {
+    background-color: #F59E0B;
+}
+.risk-card.medium {
+    background-color: #3B82F6;
+}
+.risk-card.low {
+    background-color: #10B981;
+}
+
+/* Hover effects for indicator cards */
+.threat-indicator-card {
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.threat-indicator-card:hover {
+    transform: translateY(-2px);
+}
+.risk-level-badge {
+    font-size: 1.1rem;
+}
+
+.risk-indicator.critical {
+    background-color: #DC2626;
+}
+
+.risk-indicator.high {
+    background-color: #F59E0B;
+}
+
+.risk-indicator.medium {
+    background-color: #3B82F6;
+}
+
+.risk-indicator.low {
+    background-color: #10B981;
+}
+
+.confidence-badge {
+    background-color: rgba(243, 244, 246, 0.8);
+    border: 1px solid #E5E7EB;
+}
+
+/* Dark mode adjustments */
+[data-theme="dark"] .confidence-badge {
+    background-color: rgba(31, 41, 55, 0.8);
+    border-color: #374151;
+}
+
+.threat-summary {
+    border-color: rgba(239, 68, 68, 0.3);
+    background-color: rgba(239, 68, 68, 0.1);
+}
+
+[data-theme="dark"] .threat-summary {
+    border-color: rgba(239, 68, 68, 0.3);
+    background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* More compact indicator cards */
+.threat-indicator-card {
+    min-height: 80px;
+}
+
+/* Improved action buttons */
+.action-bar button {
+    transition: all 0.2s ease;
+}
+
+.action-bar button:hover {
+    transform: translateY(-1px);
+}

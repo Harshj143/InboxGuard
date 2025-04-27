@@ -303,9 +303,14 @@ def mock_analyze_email(email_text):
 @app.route('/')
 def index():
     return render_template('index.html')
+
 @app.route('/resource.html')
 def resource():
     return render_template('resource.html')
+
+@app.route('/about.html')
+def about():
+    return render_template('about.html')
 # Store analysis results temporarily in memory
 analysis_results = {}
 
